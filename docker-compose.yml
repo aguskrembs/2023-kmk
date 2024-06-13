@@ -1,0 +1,58 @@
+services:
+    pid-ui:
+        build:
+            context: ./pid-ui
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./pid-ui:/app
+        depends_on:
+            - pid-be
+            - pid-notifications-api
+        environment:
+            - NEXT_PUBLIC_API_URL=http://pid-be:8080
+
+    pid-be:
+        build:
+            context: ./pid-be
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./pid-be:/app
+        environment:
+            - NOTIFICATIONS_API_URL=http://pid-notifications-api:9000
+            # - FIREBASE_AUTH_EMULATOR_HOST=http://firebase-emulators:9099
+            # - FIRESTORE_EMULATOR_HOST=http://firebase-emulators:8081
+        env_file:
+            - ./pid-be/.env
+        depends_on:
+            - pid-notifications-api
+
+    pid-notifications-api:
+        build:
+            context: ./pid-notifications-api
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./pid-notifications-api:/app
+        env_file:
+            - ./pid-notifications-api/.env
+
+    # firebase-emulators:
+    #     build:
+    #         context: ./firebase-emulators
+    #     ports:
+    #         - "4000:4000"
+    #         - "9099:9099"
+    #         - "8081:8081"
+    #     volumes:
+    #         - ./firebase-emulators:/app
+
+    # mock-firestore:
+    #   image: python:3.12-slim
+    #   volumes:
+    #     - ./pid-be:/app
+    #   working_dir: /app
+    #   command: ["python", "tests/mock_firestore.py"]
+    #   depends_on:
+    #     - firebase-emulators
