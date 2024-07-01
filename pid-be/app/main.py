@@ -39,8 +39,6 @@ app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
-print("EMULATOR URL: " , os.environ.get("FIRESTORE_EMULATOR_HOST"))
-
 routers = [
     users.router,
     appointments.router,
@@ -87,7 +85,7 @@ async def root() -> RedirectResponse:
     """
     Root endpoint,
 
-    It returns the OPENAPI docs for the KMKgazo API
+    It returns the OPENAPI docs for the KMK API
     """
     return RedirectResponse(url="/redoc", status_code=status.HTTP_303_SEE_OTHER)
 

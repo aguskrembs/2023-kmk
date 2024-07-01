@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./registro.module.css";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import https from "https";
-import validator from "validator";
 import { HeaderSlim, Footer } from "../components/header";
 import { toast } from "react-toastify";
+import { validatePassword } from "./components/passwordValidator";
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const Registro = () => {
 	const apiURL = process.env.NEXT_PUBLIC_API_URL;
@@ -20,47 +22,27 @@ const Registro = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [error, setError] = useState("");
 	const [role, setRole] = useState("patient");
 	const [birth_date, setBirthDate] = useState("");
 	const [genders, setGenders] = useState([]);
 	const [gender, setGender] = useState("");
 	const [blood_types, setBloodTypes] = useState([]);
 	const [blood_type, setBloodType] = useState("");
+	const [loading, setLoading] = useState(false);
 	const [disabledRegisterButton, setDisabledRegisterButton] = useState(false);
 	const router = useRouter();
-	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-	console.log("APIurl: " + apiURL);
-
-	// At request level
+	const error = useMemo(
+		() => password && validatePassword(password),
+		[password]
+	);
 	const agent = new https.Agent({
 		rejectUnauthorized: false,
 	});
-
-	const validate = (value) => {
-		if (
-			validator.isStrongPassword(value, {
-				minLength: 8,
-				minLowercase: 1,
-				minUppercase: 1,
-				minNumbers: 1,
-				minSymbols: 0,
-			})
-		) {
-			setError("");
-		} else {
-			setError(
-				"La contraseña no es lo suficientemente fuerte: debe incluir al menos 8 caracteres, 1 minúscula, 1 mayúscula y 1 número"
-			);
-		}
-	};
 
 	const fetchSpecialties = async () => {
 		const response = await axios.get(`${apiURL}specialties`, {
 			httpsAgent: agent,
 		});
-		console.log(response.data.specialties);
 		response.data.specialties == undefined
 			? setSpecialties([])
 			: setSpecialties(response.data.specialties);
@@ -70,7 +52,6 @@ const Registro = () => {
 		const response = await axios.get(`${apiURL}genders`, {
 			httpsAgent: agent,
 		});
-		console.log(response.data.genders);
 		response.data.genders == undefined
 			? setGenders([])
 			: setGenders(response.data.genders);
@@ -80,7 +61,6 @@ const Registro = () => {
 		const response = await axios.get(`${apiURL}blood-types`, {
 			httpsAgent: agent,
 		});
-		console.log(response.data.blood_types);
 		response.data.blood_types == undefined
 			? setBloodTypes([])
 			: setBloodTypes(response.data.blood_types);
@@ -120,13 +100,13 @@ const Registro = () => {
 			};
 
 		try {
+			setLoading(true);
 			const response = await axios.post(
 				`${apiURL}users/register`,
 				userData,
 				{ httpsAgent: agent }
 			);
-			console.log(response.data);
-			if (response.data.message === "Successfull registration") {
+			if (response.data.message === "Successful registration") {
 				toast.success("Se ha registrado exitosamente");
 				await delay(5000);
 				router.push("/");
@@ -135,6 +115,8 @@ const Registro = () => {
 			setDisabledRegisterButton(false);
 			console.error(error);
 			toast.error("Ha ocurrido un error");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -298,7 +280,6 @@ const Registro = () => {
 						value={password}
 						onChange={(e) => {
 							setPassword(e.target.value);
-							validate(e.target.value);
 						}}
 						required
 					/>
@@ -311,7 +292,6 @@ const Registro = () => {
 						value={confirmPassword}
 						onChange={(e) => {
 							setConfirmPassword(e.target.value);
-							validate(e.target.value);
 						}}
 						required
 					/>
