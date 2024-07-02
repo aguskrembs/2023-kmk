@@ -41,8 +41,7 @@ jobs:
 
             - name: Build backend
               working-directory: pid-be
-              run: poetry lock --no-update
-                  poetry install
+              run: poetry install
 
             - name: Build notifications api
               working-directory: pid-notifications-api
