@@ -8,7 +8,6 @@ on:
     push:
         branches-ignore:
             - main
-            - develop
 
 jobs:
     build-frontend:
@@ -38,12 +37,11 @@ jobs:
 
             - name: Install Poetry
               working-directory: pid-be
-              run: pip install poetry==1.1.15
+              run: pip install poetry
 
             - name: Build backend
               working-directory: pid-be
-              run:
-                  poetry run python -m pip wheel --use-pep517 "grpcio (==1.58.0)" |
+              run: poetry lock --no-update
                   poetry install
 
             - name: Build notifications api
