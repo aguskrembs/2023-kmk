@@ -14,14 +14,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - name: Install Vercel CLI
-              run: npm install --global vercel@latest
-            - name: Pull Vercel Environment Information
-              run: vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
-            - name: Build Frontend
-              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-            - name: Deploy Frontend to Vercel
-              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+            - name: Install Dependencies
+              run: npm i
+            - name: Build Project Artifacts
+              run: npm run build
 
     build-backend:
         runs-on: ubuntu-latest
@@ -32,7 +28,7 @@ jobs:
             - name: Set up Python
               uses: actions/setup-python@v4
               with:
-                  python-version: 3.10.5
+                  python-version: 3.12.3
 
             - name: Install Poetry
               working-directory: pid-be
@@ -43,10 +39,13 @@ jobs:
               run: |
                   poetry lock --no-update
                   poetry install
+                  poetry build
 
             - name: Build Notifications API
               working-directory: pid-notifications-api
-              run: poetry install
+              run: |
+                  poetry install
+                  poetry build
 
             - name: Install Firebase
               working-directory: pid-be
@@ -69,7 +68,6 @@ jobs:
                   UNIVERSE_DOMAIN: ${{ secrets.UNIVERSE_DOMAIN }}
                   FIREBASE_AUTH_EMULATOR_HOST: ${{ secrets.FIREBASE_AUTH_EMULATOR_HOST }}
                   FIRESTORE_EMULATOR_HOST: ${{ secrets.FIRESTORE_EMULATOR_HOST }}
-                  FIREBASE_STORAGE_EMULATOR_HOST: ${{ secrets.FIREBASE_STORAGE_EMULATOR_HOST }}
               working-directory: pid-be
               run: firebase emulators:exec "poetry run pytest"
 
