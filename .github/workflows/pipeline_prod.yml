@@ -10,7 +10,7 @@ on:
             - main
 
 jobs:
-    build-and-deploy-frontend-development:
+    build-frontend:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -37,13 +37,11 @@ jobs:
 
             - name: Install Poetry
               working-directory: pid-be
-              run: pip install poetry==1.1.15
+              run: pip install poetry
 
             - name: Build backend
               working-directory: pid-be
-              run:
-                  poetry run python -m pip wheel --use-pep517 "grpcio (==1.58.0)" |
-                  poetry install
+              run: poetry install
 
             - name: Build notifications api
               working-directory: pid-notifications-api
