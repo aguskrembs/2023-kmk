@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from datetime import datetime
 from firebase_admin import firestore
+import random
 
 db = firestore.client()
 
@@ -14,6 +15,7 @@ class Physician:
     email: str
     id: str
     approved: str
+    meds: list
 
     def __init__(
         self,
@@ -34,6 +36,7 @@ class Physician:
         self.email = email
         self.id = id
         self.approved = approved
+        self.meds = []
 
     @staticmethod
     def get_by_id(id):
@@ -134,6 +137,60 @@ class Physician:
     @staticmethod
     def update_agenda(id, agenda):
         db.collection("physicians").document(id).update({"agenda": agenda})
+    
+    @staticmethod
+    def get_meds_by_id(id):
+        return db.collection("physicians").document(id).get().to_dict()["meds"]
+
+    @staticmethod
+    def add_med(id, meds):
+        med_ref = db.collection("physicians").document(id)
+        med_id = str(random.randint(10000, 99999))
+
+        existing_meds = db.collection("physicians").document(id).get().to_dict().get("meds", [])
+        if any(med["name"] == meds["name"] and med["drug"] == meds["drug"] and med["dose"] == meds["dose"] for med in existing_meds):
+            return False
+        
+        else:
+            entry = {
+            "id": med_id,
+            "name": meds["name"],
+            "drug": meds["drug"],
+            "dose": meds["dose"],
+            }
+            med_ref.update({"meds": firestore.ArrayUnion([entry])})
+            updated_med = med_ref.get().to_dict()
+            return updated_med
+    
+    @staticmethod
+    def update_med(id, med_id, meds):
+        physician_ref = db.collection("physicians").document(id)
+        physician = physician_ref.get().to_dict()
+
+        if physician:
+            print(f"Original meds: {physician.get('meds', [])}")
+            updated_meds = [med if med.get('id') != med_id else meds for med in physician.get('meds', [])]
+            print(f"Updated meds: {updated_meds}")
+            physician_ref.update({'meds': updated_meds})
+            updated_physician = physician_ref.get().to_dict()
+            print(f"Updated physician meds: {updated_physician.get('meds', [])}")
+        else:
+            print(f"No physician found with id {id}")
+
+    @staticmethod
+    def delete_med(id, med_id):
+        physician_ref = db.collection("physicians").document(id)
+        physician = physician_ref.get().to_dict()
+
+        if physician:
+            print(f"Original meds: {physician.get('meds', [])}")
+            updated_meds = [med for med in physician.get('meds', []) if med.get('id') != med_id]
+            print(f"Updated meds: {updated_meds}")
+            physician_ref.update({'meds': updated_meds})
+            updated_physician = physician_ref.get().to_dict()
+            print(f"Updated physician meds: {updated_physician.get('meds', [])}")
+        else:
+            print(f"No physician found with id {id}")
 
     def create(self):
         if db.collection("physicians").document(self.id).get().exists:
@@ -157,6 +214,7 @@ class Physician:
                     "4": {"start": 8, "finish": 18},
                     "5": {"start": 8, "finish": 18},
                 },
+                "meds": self.meds,           
             }
         )
         return self.id

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // NO BORRAR
 import styles from "../../styles/styles.module.css";
-import { useRouter } from "next/navigation";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import https from "https";
@@ -15,7 +14,6 @@ const PhysicianPendingAppointments = () => {
 	const [metrics, setMetrics] = useState({});
 
 	const apiURL = process.env.NEXT_PUBLIC_API_URL;
-	const router = useRouter();
 
 	const agent = new https.Agent({
 		rejectUnauthorized: false,

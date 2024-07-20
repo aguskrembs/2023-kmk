@@ -15,11 +15,12 @@ const Header = (props) => {
 	return (
 		<div className={styles.header}>
 			<ToastContainer
-				limit={3}
+				limit={5}
 				position={"top-right"}
 				hideProgressBar={false}
 				closeOnClick={true}
-				pauseOnHover={true}
+				pauseOnHover={false}
+				style={{ zIndex: 999 }}
 			/>
 			<Image
 				src="/logo.png"
@@ -140,7 +141,7 @@ const PhysicianTabBar = (props) => {
 			</div>
 			<div
 				className={`${styles["tab"]} ${
-					props.highlight === "TurnosPorAprobar"
+					props.highlight === "Medicamentos"
 						? styles["selected-tab"]
 						: ""
 				}`}

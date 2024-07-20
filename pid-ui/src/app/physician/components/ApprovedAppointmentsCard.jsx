@@ -141,30 +141,30 @@ export const ApprovedAppointmentsCard = () => {
 		setShowModal(true);
 	};
 
-	const MODAL_STYLES = {
-		top: "50%",
-		left: "50%",
-		right: "auto",
-		bottom: "auto",
-		marginRight: "-50%",
-		transform: "translate(-50%, -50%)",
-		width: "80%",
-		marginTop: "6rem",
-	};
+	// const MODAL_STYLES = {
+	// 	top: "50%",
+	// 	left: "50%",
+	// 	right: "auto",
+	// 	bottom: "auto",
+	// 	marginRight: "-50%",
+	// 	transform: "translate(-50%, -50%)",
+	// 	width: "80%",
+	// 	marginTop: "6rem",
+	// };
 
-	const OVERLAY_STYLE = {
-		position: "fixed",
-		display: "flex",
-		justifyContent: "center",
-		top: "200px",
-		left: "0",
-		width: "100%",
-		height: "100%",
-		backgroundColor: "rgba(0,0,0, .8)",
-		zIndex: "1000",
-		overflowY: "auto",
-		marginTop: "6rem",
-	};
+	// const OVERLAY_STYLE = {
+	// 	position: "fixed",
+	// 	display: "flex",
+	// 	justifyContent: "center",
+	// 	top: "200px",
+	// 	left: "0",
+	// 	width: "100%",
+	// 	height: "100%",
+	// 	backgroundColor: "rgba(0,0,0, .8)",
+	// 	zIndex: "1000",
+	// 	overflowY: "auto",
+	// 	marginTop: "6rem",
+	// };
 
 	const handleCloseEditModal = () => {
 		setIsAddObervationModalOpen(false);
@@ -380,7 +380,6 @@ export const ApprovedAppointmentsCard = () => {
 						width={200}
 						height={200}
 						onClick={() => {
-							toast.info("Actualizando...");
 							fetchAppointments(setAppointments, true);
 						}}
 					/>

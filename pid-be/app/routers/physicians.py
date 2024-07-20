@@ -205,3 +205,53 @@ def update_physicians_agenda(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={"detail": "Internal server error"},
         )
+
+
+@router.get("/meds", status_code=status.HTTP_200_OK)
+def get_physician_meds(uid=Depends(Auth.is_logged_in)):
+    try:
+        physician = Physician.get_by_id(uid)
+        return {"meds": physician["meds"]}
+    except:
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"detail": "Internal server error"},
+        )
+
+@router.post("/meds", status_code=status.HTTP_200_OK)
+def add_physician_meds(meds: Dict, uid=Depends(Auth.is_logged_in)):
+    try:
+        result = Physician.add_med(id=uid, meds=meds)
+        if not result:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"detail": "Medication already exists"}
+            )
+        return {"message": "Meds added successfully"}
+    except Exception as e:
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"detail": f"Internal server error: {str(e)}"}
+        )
+    
+@router.delete("/meds/{med_id}", status_code=status.HTTP_200_OK)
+def delete_physician_meds(med_id: str, uid=Depends(Auth.is_logged_in)):
+    try:
+        Physician.delete_med(id=uid, med_id=med_id)
+        return {"message": "Med deleted successfully"}
+    except:
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"detail": "Internal server error"},
+        )
+
+@router.put("/meds/{med_id}", status_code=status.HTTP_200_OK)
+def update_physician_meds(med_id: str, meds: Dict, uid=Depends(Auth.is_logged_in)):
+    try:
+        Physician.update_med(id=uid, med_id=med_id, meds=meds)
+        return {"message": "Med updated successfully"}
+    except:
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"detail": "Internal server error"},
+        )
