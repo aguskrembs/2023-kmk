@@ -28,7 +28,6 @@ const Landing = () => {
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setDisabledLoginButton(true);
-		toast.info("Iniciando sesión...");
 		localStorage.removeItem("token");
 		axios.defaults.headers.common = {
 			Authorization: `bearer`,
@@ -75,6 +74,9 @@ const Landing = () => {
 						</div>
 					);
 					break;
+				default:
+					toast.error("Ha ocurrido un error");
+					break;
 			}
 		}
 	};
@@ -114,7 +116,7 @@ const Landing = () => {
 					}
 					disabled={disabledLoginButton}
 				>
-					Iniciar Sesión
+					{disabledLoginButton ? "Cargando..." : "Iniciar Sesión"}
 				</button>
 				<div className={styles["register-link"]}>
 					{" "}

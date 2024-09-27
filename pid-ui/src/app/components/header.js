@@ -31,6 +31,7 @@ const Header = (props) => {
 				onClick={() => {
 					redirect(router);
 				}}
+				priority
 			/>
 			<Image
 				src="/logout_icon.png"

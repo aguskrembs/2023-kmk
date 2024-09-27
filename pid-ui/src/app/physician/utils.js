@@ -5,6 +5,7 @@ const apiURL = process.env.NEXT_PUBLIC_API_URL;
 const agent = new https.Agent({
 	rejectUnauthorized: false,
 });
+import { usePhysician } from "./physicianContext.js";
 
 axios.defaults.headers.common = {
 	Authorization: `bearer ${localStorage.getItem("token")}`,
@@ -96,63 +97,70 @@ export const handleDeleteAppointment = async (
 };
 
 //MEDS
-export const fetchMeds = async (setMeds, showToast) => {
-	try {
-		const response = await axios.get(`${apiURL}physicians/meds`, {
-			httpsAgent: agent,
-		});
-		setMeds(response.data.meds);
-		showToast && toast.success("Medicamentos obtenidos exitosamente");
-	} catch (error) {
-		console.error(error);
-		toast.error("Error al obtener los medicamentos");
-	}
-};
+export const useMedications = () => {
+	const { setMeds } = usePhysician();
 
-export const handleAddMed = async (med, setMeds, setShowAddModal) => {
-	setShowAddModal(false);
-	try {
-		await axios.post(`${apiURL}physicians/meds`, med, {
-			httpsAgent: agent,
-		});
-		toast.success("Medicamento agregado exitosamente");
-		fetchMeds(setMeds);
-	} catch (error) {
-		console.error(error);
-		if (error.response.data.detail === "Medication already exists") {
-			toast.info("El medicamento ya existe");
-		} else toast.error("Error al agregar medicamento");
-	}
-};
+	const fetchMeds = async (showToast) => {
+		try {
+			const response = await axios.get(`${apiURL}physicians/meds`, {
+				httpsAgent: agent,
+			});
+			setMeds(response.data.meds);
+			showToast && toast.success("Medicamentos obtenidos exitosamente");
+		} catch (error) {
+			console.error(error);
+			toast.error("Error al obtener los medicamentos");
+		}
+	};
 
-export const handleUpdateMed = async (med, setMeds, setShowEditModal) => {
-	setShowEditModal(false);
-	try {
-		await axios.put(`${apiURL}physicians/meds/${med.id}`, med, {
-			httpsAgent: agent,
-		});
-		toast.success("Medicamento editado exitosamente");
-		fetchMeds(setMeds);
-	} catch (error) {
-		console.error(error);
-		toast.error("Error al editar medicamento");
-	}
-};
+	const handleAddMed = async (med, setShowAddModal) => {
+		setShowAddModal(false);
+		try {
+			await axios.post(`${apiURL}physicians/meds`, med, {
+				httpsAgent: agent,
+			});
+			toast.success("Medicamento agregado exitosamente");
+			fetchMeds();
+		} catch (error) {
+			console.error(error);
+			if (error.response.data.detail === "Medication already exists") {
+				toast.info("El medicamento ya existe");
+			} else toast.error("Error al agregar medicamento");
+		}
+	};
 
-export const handleDeleteMed = async (
-	medToDelete,
-	setMeds,
-	setShowDeleteModal
-) => {
-	setShowDeleteModal(false);
-	try {
-		await axios.delete(`${apiURL}physicians/meds/${medToDelete.id}`, {
-			httpsAgent: agent,
-		});
-		toast.success("Medicamento eliminado exitosamente");
-		fetchMeds(setMeds);
-	} catch (error) {
-		console.error(error);
-		toast.error("Error al eliminar medicamento");
-	}
+	const handleUpdateMed = async (med, setShowEditModal) => {
+		setShowEditModal(false);
+		try {
+			await axios.put(`${apiURL}physicians/meds/${med.id}`, med, {
+				httpsAgent: agent,
+			});
+			toast.success("Medicamento editado exitosamente");
+			fetchMeds();
+		} catch (error) {
+			console.error(error);
+			toast.error("Error al editar medicamento");
+		}
+	};
+
+	const handleDeleteMed = async (medToDelete, setShowDeleteModal) => {
+		setShowDeleteModal(false);
+		try {
+			await axios.delete(`${apiURL}physicians/meds/${medToDelete.id}`, {
+				httpsAgent: agent,
+			});
+			toast.success("Medicamento eliminado exitosamente");
+			fetchMeds();
+		} catch (error) {
+			console.error(error);
+			toast.error("Error al eliminar medicamento");
+		}
+	};
+
+	return {
+		fetchMeds,
+		handleAddMed,
+		handleUpdateMed,
+		handleDeleteMed,
+	};
 };

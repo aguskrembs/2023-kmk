@@ -75,7 +75,7 @@ export const AddMedModal = ({ isOpen, closeModal, confirmAction, med }) => {
 				<div className={styles["title"]}>Agregar Medicamento</div>
 			)}
 			<div className={styles["form-group"]}>
-				<label htmlFor="med-name">Nombre del medicamento</label>
+				<label htmlFor="med-name">Nombre comercial</label>
 				<input
 					type="text"
 					id="med-name"

@@ -7,12 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import {
-	fetchMeds,
-	handleAddMed,
-	handleUpdateMed,
-	handleDeleteMed,
-} from "../../physician/utils";
+import { useMedications } from "../../physician/utils";
 import { AddMedModal } from "./AddMedModal";
 
 export const MedsCard = () => {
@@ -21,7 +16,9 @@ export const MedsCard = () => {
 	const [showEditMedModal, setShowEditMedModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [medToDelete, setMedToDelete] = useState(null);
-	const { meds, setMeds } = usePhysician();
+	const { meds } = usePhysician();
+	const { fetchMeds, handleAddMed, handleUpdateMed, handleDeleteMed } =
+		useMedications();
 
 	const handleAddMedClick = () => {
 		setShowAddMedModal(true);
@@ -38,11 +35,12 @@ export const MedsCard = () => {
 	};
 
 	useEffect(() => {
-		fetchMeds(setMeds)
+		fetchMeds()
 			.then(() => setIsLoading(false))
-			.catch(() => {
+			.catch((error) => {
+				console.error(error);
 				setIsLoading(false);
-				toast.error("Error al obtener los datos del usuario");
+				toast.error("Error al obtener los medicamentos del usuario");
 			});
 	}, []);
 
@@ -72,7 +70,7 @@ export const MedsCard = () => {
 						width={200}
 						height={200}
 						onClick={() => {
-							fetchMeds(setMeds, true);
+							fetchMeds(true);
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
@@ -141,11 +139,7 @@ export const MedsCard = () => {
 						closeModal={() => setShowDeleteModal(false)}
 						message="¿Estás seguro que deseas eliminar este medicamento?"
 						confirmAction={() =>
-							handleDeleteMed(
-								medToDelete,
-								setMeds,
-								setShowDeleteModal
-							)
+							handleDeleteMed(medToDelete, setShowDeleteModal)
 						}
 					/>
 				</div>
