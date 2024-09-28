@@ -25,7 +25,7 @@ const loginCheck = async (router) => {
 					router.replace("/physician");
 					break;
 				case "patient":
-					router.replace("/patient-dashboard");
+					router.replace("/patient");
 					break;
 
 				default:
@@ -80,7 +80,7 @@ const redirect = async (router) => {
 					router.replace("/physician");
 					break;
 				case "patient":
-					router.replace("/patient-dashboard");
+					router.replace("/patient");
 					break;
 				default:
 					router.replace("/");

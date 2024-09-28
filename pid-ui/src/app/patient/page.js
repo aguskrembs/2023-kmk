@@ -57,7 +57,7 @@ const DashboardPatient = () => {
 			);
 			console.log(response.data);
 			if (response.data.pending_scores.length > 0) {
-				router.push("/patient-dashboard/pending-reviews");
+				router.push("/patient/pending-reviews");
 			}
 		} catch (error) {
 			toast.error("Error al obtener las reseñas pendientes");

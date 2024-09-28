@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../styles/styles.module.css";
+import styles from "../../styles/styles.module.css";
 import axios from "axios";
 import https from "https";
-import { Footer, Header, TabBar } from "../components/header";
-import ConfirmationModal from "../components/ConfirmationModal";
+import { Footer, Header, TabBar } from "../../components/header";
+import ConfirmationModal from "../../components/ConfirmationModal";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

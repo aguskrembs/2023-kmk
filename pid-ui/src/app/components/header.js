@@ -26,8 +26,8 @@ const Header = (props) => {
 				src="/logo.png"
 				alt="Logo de la empresa"
 				className={styles.logo}
-				width={200}
-				height={200}
+				width={300}
+				height={300}
 				onClick={() => {
 					redirect(router);
 				}}
@@ -83,8 +83,8 @@ const HeaderSlim = () => {
 				src="/logo.png"
 				alt="Logo de la empresa"
 				className={styles.logo}
-				width={200}
-				height={200}
+				width={300}
+				height={300}
 			/>
 		</div>
 	);
@@ -114,7 +114,7 @@ const TabBar = (props) => {
 				className={`${styles["tab"]} ${
 					props.highlight === "Ficha" ? styles["selected-tab"] : ""
 				}`}
-				onClick={() => router.push("/patient-my-record")}
+				onClick={() => router.push("/patient/patient-my-record")}
 			>
 				Mi Ficha
 			</div>
