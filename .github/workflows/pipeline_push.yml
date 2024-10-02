@@ -8,84 +8,25 @@ on:
     push:
         branches-ignore:
             - main
+            - develop
 
 jobs:
     build-frontend:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - name: Install Dependencies
-              run: npm i
+            - name: Install Vercel CLI
+              run: npm install --global vercel@latest
+            - name: Pull Vercel Environment Information
+              run: vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
             - name: Build Project Artifacts
-              run: npm run build
+              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            - name: Deploy Project Artifacts to Vercel
+              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
-    build-backend:
+    test-backend:
         runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: 3.12.3
-
-            - name: Install Poetry
-              working-directory: pid-be
-              run: pip install poetry
-
-            - name: Build Backend
-              working-directory: pid-be
-              run: |
-                  poetry lock --no-update
-                  poetry install
-                  poetry build
-
-            - name: Build Notifications API
-              working-directory: pid-notifications-api
-              run: |
-                  poetry install
-                  poetry build
-
-            - name: Install Firebase
-              working-directory: pid-be
-              run: npm install -g firebase-tools
-
-            - name: Run Emulators and Backend Tests
-              env:
-                  ENV: ${{ secrets.ENV }}
-                  REGISTER_URL: ${{ secrets.REGISTER_URL }}
-                  LOGIN_URL: ${{ secrets.LOGIN_URL }}
-                  PROJECT_ID: ${{ secrets.PROJECT_ID }}
-                  PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
-                  PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-                  CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
-                  CLIENT_ID: ${{ secrets.CLIENT_ID }}
-                  AUTH_URI: ${{ secrets.AUTH_URI }}
-                  TOKEN_URI: ${{ secrets.TOKEN_URI }}
-                  AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.AUTH_PROVIDER_X509_CERT_URL }}
-                  CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
-                  UNIVERSE_DOMAIN: ${{ secrets.UNIVERSE_DOMAIN }}
-                  FIREBASE_AUTH_EMULATOR_HOST: ${{ secrets.FIREBASE_AUTH_EMULATOR_HOST }}
-                  FIRESTORE_EMULATOR_HOST: ${{ secrets.FIRESTORE_EMULATOR_HOST }}
-              working-directory: pid-be
-              run: firebase emulators:exec "poetry run pytest"
-
-            - name: Run Notifications Tests
-              env:
-                  ENV: ${{ secrets.ENV }}
-                  MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-                  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-                  MAIL_FROM: ${{ secrets.MAIL_FROM }}
-                  MAIL_PORT: ${{ secrets.MAIL_PORT }}
-                  MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
-                  MAIL_FROM_NAME: ${{ secrets.MAIL_FROM_NAME }}
-              working-directory: pid-notifications-api
-              run: poetry run pytest
-
-    build-all:
-        needs: [build-frontend, build-backend]
-        runs-on: ubuntu-latest
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -97,26 +38,23 @@ jobs:
 
             - name: Install Poetry
               working-directory: pid-be
-              run: pip install poetry
+              run: pip install poetry==1.1.15
 
-            - name: Build Frontend
-              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-
-            - name: Build Backend
+            - name: Build backend
               working-directory: pid-be
-              run: |
-                  poetry lock --no-update
+              run:
+                  poetry run python -m pip wheel --use-pep517 "grpcio (==1.58.0)" |
                   poetry install
 
-            - name: Build Notifications API
+            - name: Build notifications api
               working-directory: pid-notifications-api
               run: poetry install
 
-            - name: Install Firebase
+            - name: Install firebase
               working-directory: pid-be
               run: npm install -g firebase-tools
 
-            - name: Run Emulators and Backend Tests
+            - name: Run emulators and backend tests
               env:
                   ENV: ${{ secrets.ENV }}
                   REGISTER_URL: ${{ secrets.REGISTER_URL }}
@@ -137,7 +75,7 @@ jobs:
               working-directory: pid-be
               run: firebase emulators:exec "poetry run pytest"
 
-            - name: Run Notifications Tests
+            - name: Run notifications tests
               env:
                   ENV: ${{ secrets.ENV }}
                   MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
@@ -148,6 +86,3 @@ jobs:
                   MAIL_FROM_NAME: ${{ secrets.MAIL_FROM_NAME }}
               working-directory: pid-notifications-api
               run: poetry run pytest
-
-            - name: Deploy Frontend to Vercel
-              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
