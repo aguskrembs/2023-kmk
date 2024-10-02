@@ -6,10 +6,13 @@ const agent = new https.Agent({
 	rejectUnauthorized: false,
 });
 import { usePhysician } from "./physicianContext.js";
+import { useEffect } from "react";
 
-axios.defaults.headers.common = {
-	Authorization: `bearer ${localStorage.getItem("token")}`,
-};
+useEffect(() => {
+	axios.defaults.headers.common = {
+		Authorization: `bearer ${localStorage.getItem("token")}`,
+	};
+}, []);
 
 //PENDING APPOINTMENTS
 export const fetchPendingAppointments = async (
