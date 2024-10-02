@@ -27,6 +27,7 @@ from app.routers import (
     bloodTypes,
     analysis,
     dashboards,
+    medications
 )
 from app.models.entities.Auth import Auth
 
@@ -50,6 +51,7 @@ routers = [
     bloodTypes.router,
     analysis.router,
     dashboards.router,
+    medications.router
 ]
 
 for router in routers:
@@ -139,6 +141,10 @@ def custom_openapi():
             {
                 "name": "Analysis",
                 "description": "Operations that handle analysis files",
+            },
+             {
+                "name": "Medications",
+                "description": "Operations that handle medications",
             },
         ],
     )

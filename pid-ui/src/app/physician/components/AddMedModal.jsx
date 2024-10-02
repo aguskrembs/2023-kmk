@@ -27,7 +27,7 @@ export const AddMedModal = ({ isOpen, closeModal, confirmAction, med }) => {
 			setMedDrug("");
 			setMedDose("");
 
-			confirmAction(med, setMeds, closeModal);
+			confirmAction(med, closeModal);
 		} else {
 			alert("Por favor, complete todos los campos");
 		}
@@ -46,7 +46,7 @@ export const AddMedModal = ({ isOpen, closeModal, confirmAction, med }) => {
 			setMedDrug("");
 			setMedDose("");
 
-			confirmAction(updatedMed, setMeds, closeModal);
+			confirmAction(updatedMed, closeModal);
 		} else {
 			alert("Por favor, complete todos los campos");
 		}

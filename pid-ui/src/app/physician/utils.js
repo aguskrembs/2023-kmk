@@ -102,10 +102,14 @@ export const useMedications = () => {
 
 	const fetchMeds = async (showToast) => {
 		try {
-			const response = await axios.get(`${apiURL}physicians/meds`, {
-				httpsAgent: agent,
-			});
-			setMeds(response.data.meds);
+			const response = await axios.get(
+				`${apiURL}medications/medications`,
+				{
+					httpsAgent: agent,
+				}
+			);
+			console.log(response);
+			setMeds(response.data ?? []);
 			showToast && toast.success("Medicamentos obtenidos exitosamente");
 		} catch (error) {
 			console.error(error);
@@ -116,44 +120,45 @@ export const useMedications = () => {
 	const handleAddMed = async (med, setShowAddModal) => {
 		setShowAddModal(false);
 		try {
-			await axios.post(`${apiURL}physicians/meds`, med, {
+			await axios.post(`${apiURL}medications/medications`, med, {
 				httpsAgent: agent,
 			});
 			toast.success("Medicamento agregado exitosamente");
 			fetchMeds();
 		} catch (error) {
 			console.error(error);
-			if (error.response.data.detail === "Medication already exists") {
-				toast.info("El medicamento ya existe");
-			} else toast.error("Error al agregar medicamento");
+			toast.info(error.response.data.detail);
 		}
 	};
 
 	const handleUpdateMed = async (med, setShowEditModal) => {
 		setShowEditModal(false);
 		try {
-			await axios.put(`${apiURL}physicians/meds/${med.id}`, med, {
+			await axios.put(`${apiURL}medications/medications/${med.id}`, med, {
 				httpsAgent: agent,
 			});
 			toast.success("Medicamento editado exitosamente");
 			fetchMeds();
 		} catch (error) {
 			console.error(error);
-			toast.error("Error al editar medicamento");
+			toast.error(error.response.data.detail);
 		}
 	};
 
 	const handleDeleteMed = async (medToDelete, setShowDeleteModal) => {
 		setShowDeleteModal(false);
 		try {
-			await axios.delete(`${apiURL}physicians/meds/${medToDelete.id}`, {
-				httpsAgent: agent,
-			});
+			await axios.delete(
+				`${apiURL}medications/medications/${medToDelete.id}`,
+				{
+					httpsAgent: agent,
+				}
+			);
 			toast.success("Medicamento eliminado exitosamente");
 			fetchMeds();
 		} catch (error) {
 			console.error(error);
-			toast.error("Error al eliminar medicamento");
+			toast.error(error.response.data.detail);
 		}
 	};
 
