@@ -106,8 +106,9 @@ const Registro = () => {
 				userData,
 				{ httpsAgent: agent }
 			);
-			if (response.data.message === "Successful registration") {
-				toast.success("Se ha registrado exitosamente");
+			console.log(response);
+			if ([200, 201].includes(response.status)) {
+				toast.success("Registro exitoso. Redirigiendo...");
 				await delay(5000);
 				router.push("/");
 			}
@@ -306,18 +307,15 @@ const Registro = () => {
 				)}
 				<button
 					type="submit"
-					className={`${styles["button"]} ${
+					className={`${
 						password !== confirmPassword ||
 						error ||
+						loading ||
 						disabledRegisterButton
 							? styles["disabled-button"]
-							: ""
+							: styles["button"]
 					}`}
-					disabled={
-						password !== confirmPassword ||
-						error ||
-						disabledRegisterButton
-					}
+					disabled={password !== confirmPassword || error || loading}
 				>
 					Registrarse
 				</button>

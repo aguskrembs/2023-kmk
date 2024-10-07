@@ -6,12 +6,11 @@ env:
 
 on:
     push:
-        branches-ignore:
-            - main
+        branches:
             - develop
 
 jobs:
-    build-frontend:
+    build-and-deploy-frontend-development:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -32,17 +31,19 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Set up Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@v4
               with:
-                  python-version: 3.12.3
+                  python-version: 3.10.5
 
             - name: Install Poetry
               working-directory: pid-be
-              run: pip install poetry==1.8.3
+              run: pip install poetry==1.1.15
 
             - name: Build backend
               working-directory: pid-be
-              run: poetry install
+              run:
+                  poetry run python -m pip wheel --use-pep517 "grpcio (==1.58.0)" |
+                  poetry install
 
             - name: Build notifications api
               working-directory: pid-notifications-api
@@ -52,7 +53,7 @@ jobs:
               working-directory: pid-be
               run: npm install -g firebase-tools
 
-            - name: Run emulators and backend tests
+            - name: Run emualtors and backend tests
               env:
                   ENV: ${{ secrets.ENV }}
                   REGISTER_URL: ${{ secrets.REGISTER_URL }}

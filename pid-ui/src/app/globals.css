@@ -3,79 +3,79 @@
 @tailwind utilities;
 
 :root {
-    --foreground-rgb: 0, 0, 0;
+	--foreground-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --foreground-rgb: 255, 255, 255;
-    }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+	}
 }
 
 body {
 }
 
 title {
-    font-size: 5rem;
-    margin-bottom: 1rem;
-    color: #333;
+	font-size: 5rem;
+	margin-bottom: 1rem;
+	color: #333;
 }
 
 /* Estilos generales para botones */
 button {
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-    margin: 10px 5px;
-    font-size: 16px;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-right: 10px;
+	margin: 10px 5px;
+	font-size: 16px;
 }
 
 /* Estilos para el encabezado */
 header {
-    background-color: rgb(238, 238, 238); /* Color de fondo del encabezado */
-    padding: 1rem; /* Espaciado del encabezado */
-    text-align: center;
-    position: fixed; /* Establece la posición como fija */
-    top: 0; /* Pega el encabezado al borde superior */
-    left: 0; /* Alinea el encabezado a la izquierda */
-    right: 0; /* Alinea el encabezado a la derecha */
-    z-index: 999; /* Ajusta el valor de z-index para superponer sobre el contenido */
-    display: flex; /* Activa el diseño flexible para centrar el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center; /* Centra el contenido verticalmente */
-    height: 100px; /* Fija una altura fija para el encabezado */
+	background-color: rgb(238, 238, 238);
+	padding: 1rem;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 50;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
 }
 
 subtitle {
-    padding-top: 0.5rem;
-    font-size: 1.5rem; /* Tamaño del subtítulo */
-    color: #333;
+	padding-top: 0.5rem;
+	font-size: 1.5rem; /* Tamaño del subtítulo */
+	color: #333;
 }
 
 input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
-    margin: 1rem 0;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
+	margin: 1rem 0;
 }
 
 /* Estilos para el pie de página de la página de inicio */
 footer {
-    font-size: 0.8rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    color: #777;
-    position: relative;
-    bottom: 0;
+	font-size: 0.8rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	color: #777;
+	position: relative;
+	bottom: 0;
 }

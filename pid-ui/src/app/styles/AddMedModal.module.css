@@ -1,4 +1,4 @@
-/* ConfirmationModal.module.css */
+/* AddMedModal.module.css */
 .modal {
 	position: absolute;
 	top: 50%;
@@ -37,10 +37,6 @@
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 30px;
-}
-
-.message {
-	margin-top: 15px;
 }
 
 .title {
