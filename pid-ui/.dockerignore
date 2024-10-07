@@ -1,0 +1,17 @@
+# Ignore development files and directories
+node_modules
+.next
+out
+
+# Ignore build artifacts
+build
+dist
+
+# Ignore environment-specific files
+.env
+.env.local
+.env.*.local
+
+# Ignore version control files
+.git
+.gitignore

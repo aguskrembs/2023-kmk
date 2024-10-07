@@ -1,0 +1,46 @@
+/* AddMedModal.module.css */
+.modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	height: auto;
+	background-color: white;
+	padding: 20px;
+	border-radius: 8px;
+	outline: none;
+}
+
+.overlay {
+	position: fixed;
+	z-index: 99;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-button {
+	background-color: rgb(38, 60, 132);
+	color: #fff;
+	width: fit-content;
+}
+
+.cancel-button {
+	background-color: #ca1a1a;
+	color: #fff;
+}
+
+.buttons-container {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 30px;
+}
+
+.title {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	color: #333;
+}

@@ -10,7 +10,7 @@ packages = [{ include = "app" }, { include = "tests" }, { include = "credentials
 start = "app.main:start"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 fastapi = {extras = ["all"], version = "^0.103.1"}
 python-dotenv = "^1.0.0"
 uvicorn = "^0.23.2"
@@ -18,7 +18,7 @@ pydantic = "^2.3.0"
 requests = "^2.31.0"
 firebase-admin = "^6.2.0"
 python-multipart = "^0.0.6"
-grpcio = "1.58.0"
+grpcio = "1.66.2"
 httpx = "^0.25.0"
 
 [tool.poetry.dev-dependencies]

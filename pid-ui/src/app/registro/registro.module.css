@@ -1,144 +1,145 @@
 .registro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    text-align: center;
-    background-color: #fff;
-    padding: 0;
-    width: 100%;
-    margin-top: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	height: 100vh;
+	text-align: center;
+	background-color: #fff;
+	padding: 0;
+	width: 100%;
+	margin-top: 100px;
 }
 
 /* Estilos para los mensajes de error */
 .error-message {
-    color: red;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    visibility: visible;
+	color: red;
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	visibility: visible;
 }
 
 /* Estilos para el logo */
 .logo {
-    width: 250px; /* Tamaño del logo */
-    height: auto;
+	width: 250px; /* Tamaño del logo */
+	height: auto;
 }
 
 /* Estilos para el título de la página de inicio de sesión */
 .title {
-    font-size: 2rem;
-    color: #333;
+	font-size: 2rem;
+	color: #333;
 }
 
 /* Estilos para el subtítulo "Iniciar Sesión" */
 .subtitle {
-    font-size: 1.5rem;
-    color: #333;
-    margin: 1rem 0;
+	font-size: 1.5rem;
+	color: #333;
+	margin: 1rem 0;
 }
 
 /* Estilos para el formulario de inicio de sesión */
 .form {
-    align-self: flex-start;
-    justify-content: center;
-    display: flex;
-    background-color: #fff;
-    width: 100%;
-    padding: 2rem;
-    flex-direction: column;
-    max-width: 600px;
-    flex-wrap: wrap;
-    margin: 0 auto;
+	align-self: flex-start;
+	justify-content: center;
+	display: flex;
+	background-color: #fff;
+	width: 100%;
+	padding: 2rem;
+	flex-direction: column;
+	max-width: 600px;
+	flex-wrap: wrap;
+	margin: 0 auto;
 }
 
 /* Estilos para los grupos de formulario */
 .form-group {
-    text-align: left;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
+	text-align: left;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
 }
 
 /* Estilos para las etiquetas de formulario */
 .form-group label {
-    display: block;
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+	display: block;
+	font-size: 1rem;
+	color: #333;
+	margin-bottom: 0.5rem;
 }
 
 /* Estilos para los campos de entrada de formulario */
 .form-group input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #333;
-    margin: 0;
-    margin-bottom: 1rem;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #333;
+	margin: 0;
+	margin-bottom: 1rem;
 }
 
 .button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-    text-align: center;
+	padding: 0.5rem 1rem;
+	background-color: #007bff;
+	color: #fff;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	width: 100%;
+	text-align: center;
 }
 
 .button:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
 
 /* Estilos para el botón deshabilitado */
 .disabled-button {
-    background-color: #ccc; /* Color de fondo gris */
-    cursor: not-allowed; /* Cursor no permitido (para indicar que está deshabilitado) */
+	background-color: #ccc; /* Color de fondo gris */
+	color: #777;
+	cursor: not-allowed; /* Cursor no permitido (para indicar que está deshabilitado) */
 }
 
 /* Estilos para el pie de página de la página de inicio */
 .page-footer {
-    font-size: 0.8rem;
-    margin-top: 2rem;
-    color: #777;
+	font-size: 0.8rem;
+	margin-top: 2rem;
+	color: #777;
 }
 
 /* Estilos para el campo de selección (select) */
 .form-group select {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000; /* Cambia el color del texto a negro */
-    background-color: #fff; /* Cambia el color de fondo a blanco */
-    appearance: none; /* Elimina la apariencia nativa del select */
-    outline: none; /* Elimina el resaltado del borde al enfocar */
-    cursor: pointer;
-    margin: 0;
-    margin-bottom: 1rem;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000; /* Cambia el color del texto a negro */
+	background-color: #fff; /* Cambia el color de fondo a blanco */
+	appearance: none; /* Elimina la apariencia nativa del select */
+	outline: none; /* Elimina el resaltado del borde al enfocar */
+	cursor: pointer;
+	margin: 0;
+	margin-bottom: 1rem;
 }
 
 /* Estilos para el enlace de registro */
 .sign-in-link {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #007bff;
-    text-decoration: none;
+	margin-top: 1rem;
+	font-size: 1rem;
+	color: #007bff;
+	text-decoration: none;
 }
 
 .sign-in-link a {
-    color: #007bff;
-    text-decoration: none;
+	color: #007bff;
+	text-decoration: none;
 }
 
 .sign-in-link a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }

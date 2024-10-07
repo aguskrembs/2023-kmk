@@ -1,130 +1,130 @@
 /* Estilos para el encabezado */
 .header {
-    background-color: rgb(238, 238, 238); /* Color de fondo del encabezado */
-    padding: 1rem; /* Espaciado del encabezado */
-    text-align: center;
-    position: fixed; /* Establece la posición como fija */
-    top: 0; /* Pega el encabezado al borde superior */
-    left: 0; /* Alinea el encabezado a la izquierda */
-    right: 0; /* Alinea el encabezado a la derecha */
-    z-index: 999; /* Ajusta el valor de z-index para superponer sobre el contenido */
-    display: flex; /* Activa el diseño flexible para centrar el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center; /* Centra el contenido verticalmente */
-    height: 100px; /* Fija una altura fija para el encabezado */
+	background-color: rgb(238, 238, 238);
+	padding: 1rem;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 50;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
 }
 
 /* Estilos para el logo */
 .logo {
-    width: 250px; /* Tamaño del logo */
-    height: auto;
-    cursor: pointer;
+	width: 250px; /* Tamaño del logo */
+	height: auto;
+	cursor: pointer;
 }
 
 .logout-icon {
-    width: 30px;
-    height: auto;
-    cursor: pointer;
-    position: absolute;
-    right: 1.7rem;
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	position: absolute;
+	right: 1.7rem;
 }
 .logout-icon:hover {
-    filter: brightness(0.8);
+	filter: brightness(0.8);
 }
 
 .bell-icon {
-    width: 30px;
-    height: auto;
-    cursor: pointer;
-    position: absolute;
-    right: 4rem;
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	position: absolute;
+	right: 4rem;
 }
 .bell-icon:hover {
-    filter: brightness(0.8);
+	filter: brightness(0.8);
 }
 
 .user-icon {
-    width: 30px;
-    height: auto;
-    cursor: pointer;
-    position: absolute;
-    left: 1.7rem;
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	position: absolute;
+	left: 1.7rem;
 }
 .user-icon:hover {
-    filter: brightness(0.8);
+	filter: brightness(0.8);
 }
 /* Estilos para el título de la página de inicio de sesión */
 .title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #333;
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	color: #333;
 }
 
 /* Estilos para el subtítulo "Iniciar Sesión" */
 .subtitle {
-    font-size: 1.5rem; /* Tamaño del subtítulo */
-    color: #333;
+	font-size: 1.5rem; /* Tamaño del subtítulo */
+	color: #333;
 }
 
 .subtitle:disabled {
-    color: #5d5d5d;
+	color: #5d5d5d;
 }
 
 /* Estilos para la barra superior de navegación por pestañas */
 .tab-bar {
-    display: flex;
-    background-color: rgb(238, 238, 238);
-    text-align: center;
-    position: fixed;
-    top: 100px;
-    justify-content: baseline;
-    align-items: center;
-    height: 5rem;
-    width: 100%;
-    padding: 2rem;
-    box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+	display: flex;
+	background-color: rgb(238, 238, 238);
+	text-align: center;
+	position: fixed;
+	top: 100px;
+	justify-content: baseline;
+	align-items: center;
+	height: 5rem;
+	width: 100%;
+	padding: 2rem;
+	box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.1);
+	z-index: 40;
 }
 
 /* Estilos para las pestañas */
 .tab {
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-    padding: 10px 20px; /* Añade espaciado a las pestañas */
-    color: #fff;
-    border-radius: 6px;
-    background-color: #7a7a7a;
-    margin: 10px 10px 10px 10px;
-    transition: background-color 0.3s;
+	flex: 1;
+	text-align: center;
+	cursor: pointer;
+	padding: 10px 20px; /* Añade espaciado a las pestañas */
+	color: #fff;
+	border-radius: 6px;
+	background-color: #7a7a7a;
+	margin: 10px 10px 10px 10px;
+	transition: background-color 0.3s;
 }
 .tab:hover {
-    background-color: #626262;
-    color: #fff;
+	background-color: #626262;
+	color: #fff;
 }
 
 .selected-tab {
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-    padding: 10px 20px; /* Añade espaciado a las pestañas */
-    color: #fff;
-    border-radius: 6px;
-    background-color: rgb(38, 60, 132);
-    margin: 10px 10px 10px 10px;
+	flex: 1;
+	text-align: center;
+	cursor: pointer;
+	padding: 10px 20px; /* Añade espaciado a las pestañas */
+	color: #fff;
+	border-radius: 6px;
+	background-color: rgb(38, 60, 132);
+	margin: 10px 10px 10px 10px;
 }
 .selected-tab:hover {
-    background-color: rgb(38, 60, 132);
-    color: #fff;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
 }
 
 .tab_disabled {
-    flex: 1;
-    text-align: center;
-    cursor: not-allowed;
-    padding: 10px 20px; /* Añade espaciado a las pestañas */
-    color: #5d5d5d;
-    border-radius: 6px;
-    background-color: #d7d7d7;
-    margin: 10px 10px 10px 10px;
+	flex: 1;
+	text-align: center;
+	cursor: not-allowed;
+	padding: 10px 20px; /* Añade espaciado a las pestañas */
+	color: #5d5d5d;
+	border-radius: 6px;
+	background-color: #d7d7d7;
+	margin: 10px 10px 10px 10px;
 }
