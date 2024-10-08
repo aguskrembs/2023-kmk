@@ -11,15 +11,12 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import {
-	fetchAppointments,
-	handleDeleteAppointment,
-} from "@/app/physician/utils";
 
 export const ApprovedAppointmentsCard = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const apiURL = process.env.NEXT_PUBLIC_API_URL;
-	const { appointments, setAppointments } = usePhysician();
+	const { appointments, fetchAppointments, handleDeleteAppointment } =
+		usePhysician();
 	const [isAddObservationModalOpen, setIsAddObervationModalOpen] =
 		useState(false);
 	const [startTime, setStartTime] = useState("");
@@ -105,7 +102,7 @@ export const ApprovedAppointmentsCard = () => {
 				}
 			);
 			toast.info("Turno cerrado exitosamente");
-			fetchAppointments(setAppointments);
+			fetchAppointments();
 			setIsAddObervationModalOpen(false);
 		} catch (error) {
 			toast.error("Error al agregar la observación");
@@ -141,31 +138,6 @@ export const ApprovedAppointmentsCard = () => {
 		setShowModal(true);
 	};
 
-	// const MODAL_STYLES = {
-	// 	top: "50%",
-	// 	left: "50%",
-	// 	right: "auto",
-	// 	bottom: "auto",
-	// 	marginRight: "-50%",
-	// 	transform: "translate(-50%, -50%)",
-	// 	width: "80%",
-	// 	marginTop: "6rem",
-	// };
-
-	// const OVERLAY_STYLE = {
-	// 	position: "fixed",
-	// 	display: "flex",
-	// 	justifyContent: "center",
-	// 	top: "200px",
-	// 	left: "0",
-	// 	width: "100%",
-	// 	height: "100%",
-	// 	backgroundColor: "rgba(0,0,0, .8)",
-	// 	zIndex: "1000",
-	// 	overflowY: "auto",
-	// 	marginTop: "6rem",
-	// };
-
 	const handleCloseEditModal = () => {
 		setIsAddObervationModalOpen(false);
 	};
@@ -174,10 +146,10 @@ export const ApprovedAppointmentsCard = () => {
 		axios.defaults.headers.common = {
 			Authorization: `bearer ${localStorage.getItem("token")}`,
 		};
-		fetchAppointments(setAppointments)
-			.then(() => setIsLoading(false)) // Marcar como cargado cuando la respuesta llega
+		fetchAppointments()
+			.then(() => setIsLoading(false))
 			.catch(() => {
-				setIsLoading(false); // Asegúrate de marcar como cargado en caso de error
+				setIsLoading(false);
 			});
 	}, []);
 
@@ -188,7 +160,6 @@ export const ApprovedAppointmentsCard = () => {
 					ariaHideApp={false}
 					isOpen={isAddObservationModalOpen}
 					onRequestClose={handleCloseEditModal}
-					// style={customStyles}
 				>
 					<div
 						className={styles["new-record-section"]}
@@ -380,7 +351,7 @@ export const ApprovedAppointmentsCard = () => {
 						width={200}
 						height={200}
 						onClick={() => {
-							fetchAppointments(setAppointments, true);
+							fetchAppointments(true);
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
@@ -470,7 +441,6 @@ export const ApprovedAppointmentsCard = () => {
 						confirmAction={() =>
 							handleDeleteAppointment(
 								appointmentIdToDelete,
-								setAppointments,
 								setShowModal
 							)
 						}

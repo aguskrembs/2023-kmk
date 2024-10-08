@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import { useMedications } from "../../physician/utils";
 import { AddMedModal } from "./AddMedModal";
 
 export const MedsCard = () => {
@@ -16,9 +15,8 @@ export const MedsCard = () => {
 	const [showEditMedModal, setShowEditMedModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [medToDelete, setMedToDelete] = useState(null);
-	const { meds } = usePhysician();
-	const { fetchMeds, handleAddMed, handleUpdateMed, handleDeleteMed } =
-		useMedications();
+	const { meds, fetchMeds, handleAddMed, handleUpdateMed, handleDeleteMed } =
+		usePhysician();
 
 	const handleAddMedClick = () => {
 		setShowAddMedModal(true);

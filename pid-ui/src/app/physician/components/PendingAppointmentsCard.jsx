@@ -7,18 +7,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import {
-	fetchPendingAppointments,
-	handleApproveAppointment,
-	handleDenyAppointment,
-} from "../../physician/utils";
 
 export const PendingAppointmentsCard = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [showPendingModal, setPendingShowModal] = useState(false);
 	const [appointmentIdToDeny, setAppointmentIdToDeny] = useState(null);
 
-	const { pendingAppointments, setPendingAppointments } = usePhysician();
+	const {
+		pendingAppointments,
+		fetchPendingAppointments,
+		handleApproveAppointment,
+		handleDenyAppointment,
+	} = usePhysician();
 
 	const handleDenyClick = (appointmentId) => {
 		setAppointmentIdToDeny(appointmentId);
@@ -26,9 +26,10 @@ export const PendingAppointmentsCard = () => {
 	};
 
 	useEffect(() => {
-		fetchPendingAppointments(setPendingAppointments)
+		fetchPendingAppointments()
 			.then(() => setIsLoading(false))
-			.catch(() => {
+			.catch((error) => {
+				console.log(error);
 				setIsLoading(false);
 				toast.error("Error al obtener los datos del usuario");
 			});
@@ -51,10 +52,7 @@ export const PendingAppointmentsCard = () => {
 						height={200}
 						onClick={() => {
 							toast.info("Actualizando turnos...");
-							fetchPendingAppointments(
-								setPendingAppointments,
-								true
-							);
+							fetchPendingAppointments(true);
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
@@ -90,8 +88,7 @@ export const PendingAppointmentsCard = () => {
 												}
 												onClick={() =>
 													handleApproveAppointment(
-														appointment.id,
-														setPendingAppointments
+														appointment.id
 													)
 												}
 											>
@@ -126,7 +123,6 @@ export const PendingAppointmentsCard = () => {
 						confirmAction={() =>
 							handleDenyAppointment(
 								appointmentIdToDeny,
-								setPendingAppointments,
 								setPendingShowModal
 							)
 						}
