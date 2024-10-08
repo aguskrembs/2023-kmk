@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from datetime import datetime
 from firebase_admin import firestore
+import random
 
 db = firestore.client()
 
@@ -134,7 +135,7 @@ class Physician:
     @staticmethod
     def update_agenda(id, agenda):
         db.collection("physicians").document(id).update({"agenda": agenda})
-
+    
     def create(self):
         if db.collection("physicians").document(self.id).get().exists:
             raise HTTPException(

@@ -1,0 +1,26 @@
+# Ignore Python bytecode files
+*.pyc
+
+# Ignore Python cache directories
+__pycache__/
+
+# Ignore Docker-related files
+.dockerignore
+Dockerfile
+
+# Ignore version control files
+.git/
+.gitignore
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore system and temporary files
+*.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
