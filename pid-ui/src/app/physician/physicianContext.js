@@ -12,21 +12,17 @@ const PhysiscianContext = createContext();
 
 export const PhysicianProvider = ({ children }) => {
 	const [appointments, setAppointments] = useState([]);
+	const [appointmentToClose, setAppointmentToClose] = useState({});
 	const [pendingAppointments, setPendingAppointments] = useState([]);
 	const [meds, setMeds] = useState([]);
 
 	//CONFIRMED APPOINTMENTS
 	const fetchAppointments = async (showToast) => {
 		try {
-			const response = await axios.get(
-				`${apiURL}appointments/physician`,
-				{
-					httpsAgent: agent,
-				}
-			);
-			response.data.appointments == undefined
-				? setAppointments([])
-				: setAppointments(response.data.appointments);
+			const response = await axios.get(`${apiURL}appointments/physician`, {
+				httpsAgent: agent,
+			});
+			response.data.appointments == undefined ? setAppointments([]) : setAppointments(response.data.appointments);
 			showToast && toast.success("Turnos obtenidos exitosamente");
 		} catch (error) {
 			toast.error("Error al obtener los turnos");
@@ -34,18 +30,12 @@ export const PhysicianProvider = ({ children }) => {
 		}
 	};
 
-	const handleDeleteAppointment = async (
-		appointmentIdToDelete,
-		setShowModal
-	) => {
+	const handleDeleteAppointment = async (appointmentIdToDelete, setShowModal) => {
 		setShowModal(false);
 		try {
-			await axios.delete(
-				`${apiURL}appointments/${appointmentIdToDelete}`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			await axios.delete(`${apiURL}appointments/${appointmentIdToDelete}`, {
+				httpsAgent: agent,
+			});
 			toast.success("Turno eliminado exitosamente");
 			fetchAppointments();
 		} catch (error) {
@@ -57,12 +47,9 @@ export const PhysicianProvider = ({ children }) => {
 	//PENDING APPOINTMENTS
 	const fetchPendingAppointments = async (showToast) => {
 		try {
-			const response = await axios.get(
-				`${apiURL}physicians/pending-appointments`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			const response = await axios.get(`${apiURL}physicians/pending-appointments`, {
+				httpsAgent: agent,
+			});
 			setPendingAppointments(response.data.appointments);
 			showToast && toast.success("Turnos obtenidos exitosamente");
 		} catch (error) {
@@ -74,9 +61,7 @@ export const PhysicianProvider = ({ children }) => {
 	const handleApproveAppointment = async (appointmentId) => {
 		console.log(appointmentId);
 		try {
-			await axios.post(
-				`${apiURL}physicians/approve-appointment/${appointmentId}`
-			);
+			await axios.post(`${apiURL}physicians/approve-appointment/${appointmentId}`);
 			toast.success("Turno aprobado exitosamente");
 			fetchPendingAppointments();
 			fetchAppointments();
@@ -85,10 +70,7 @@ export const PhysicianProvider = ({ children }) => {
 		}
 	};
 
-	const handleDenyAppointment = async (
-		appointmentIdToDeny,
-		setPendingShowModal
-	) => {
+	const handleDenyAppointment = async (appointmentIdToDeny, setPendingShowModal) => {
 		setPendingShowModal(false);
 		try {
 			await axios.delete(`${apiURL}appointments/${appointmentIdToDeny}`, {
@@ -104,12 +86,9 @@ export const PhysicianProvider = ({ children }) => {
 
 	const fetchMeds = async (showToast) => {
 		try {
-			const response = await axios.get(
-				`${apiURL}medications/medications`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			const response = await axios.get(`${apiURL}medications/medications`, {
+				httpsAgent: agent,
+			});
 			console.log(response);
 			setMeds(response.data ?? []);
 			showToast && toast.success("Medicamentos obtenidos exitosamente");
@@ -150,12 +129,9 @@ export const PhysicianProvider = ({ children }) => {
 	const handleDeleteMed = async (medToDelete, setShowDeleteModal) => {
 		setShowDeleteModal(false);
 		try {
-			await axios.delete(
-				`${apiURL}medications/medications/${medToDelete.id}`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			await axios.delete(`${apiURL}medications/medications/${medToDelete.id}`, {
+				httpsAgent: agent,
+			});
 			toast.success("Medicamento eliminado exitosamente");
 			fetchMeds();
 		} catch (error) {
@@ -169,6 +145,8 @@ export const PhysicianProvider = ({ children }) => {
 			value={{
 				appointments,
 				setAppointments,
+				appointmentToClose,
+				setAppointmentToClose,
 				pendingAppointments,
 				setPendingAppointments,
 				meds,

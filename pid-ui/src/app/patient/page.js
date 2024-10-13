@@ -37,8 +37,7 @@ const DashboardPatient = () => {
 	const [editingAppointment, setEditingAppointment] = useState({});
 	const [showModal, setShowModal] = useState(false);
 	const [appointmentIdToDelete, setAppointmentIdToDelete] = useState(null);
-	const [disabledAppointmentButton, setDisabledAppointmentButton] =
-		useState(false);
+	const [disabledAppointmentButton, setDisabledAppointmentButton] = useState(false);
 
 	const [physicianScores, setPhysicianScores] = useState([]);
 	const [appointmentScores, setAppointmentScores] = useState([]);
@@ -49,12 +48,9 @@ const DashboardPatient = () => {
 
 	const checkPendingReviews = async () => {
 		try {
-			const response = await axios.get(
-				`${apiURL}users/patient-pending-scores`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			const response = await axios.get(`${apiURL}users/patient-pending-scores`, {
+				httpsAgent: agent,
+			});
 			console.log(response.data);
 			if (response.data.pending_scores.length > 0) {
 				router.push("/patient/pending-reviews");
@@ -75,7 +71,7 @@ const DashboardPatient = () => {
 			let tempReviews = [
 				{ id: 1, type: "Puntualidad", rating: 0 },
 				{ id: 2, type: "Atencion", rating: 0 },
-				{ id: 3, type: "Limpieza", rating: 0 },
+				{ id: 3, type: "Higiene", rating: 0 },
 				{ id: 4, type: "Disponibilidad", rating: 0 },
 				{ id: 5, type: "Precio", rating: 0 },
 				{ id: 6, type: "Comunicacion", rating: 0 },
@@ -88,15 +84,7 @@ const DashboardPatient = () => {
 			tempReviews[4].rating = response.data.score_metrics.price;
 			tempReviews[5].rating = response.data.score_metrics.communication;
 
-			if (
-				tempReviews[0].rating +
-					tempReviews[1].rating +
-					tempReviews[2].rating +
-					tempReviews[3].rating +
-					tempReviews[4].rating +
-					tempReviews[5].rating ==
-				0
-			) {
+			if (tempReviews[0].rating + tempReviews[1].rating + tempReviews[2].rating + tempReviews[3].rating + tempReviews[4].rating + tempReviews[5].rating == 0) {
 				setPhysicianScores([]);
 			} else {
 				setPhysicianScores(tempReviews);
@@ -117,7 +105,7 @@ const DashboardPatient = () => {
 			let tempReviews = [
 				{ id: 1, type: "Puntualidad", rating: 5 },
 				{ id: 2, type: "Atencion", rating: 4.5 },
-				{ id: 3, type: "Limpieza", rating: 4.5 },
+				{ id: 3, type: "Higiene", rating: 4.5 },
 				{ id: 4, type: "Disponibilidad", rating: 3 },
 				{ id: 5, type: "Precio", rating: 4.5 },
 				{ id: 6, type: "Comunicacion", rating: 2.5 },
@@ -130,15 +118,7 @@ const DashboardPatient = () => {
 			tempReviews[4].rating = response.data.score_metrics.price;
 			tempReviews[5].rating = response.data.score_metrics.communication;
 
-			if (
-				tempReviews[0].rating +
-					tempReviews[1].rating +
-					tempReviews[2].rating +
-					tempReviews[3].rating +
-					tempReviews[4].rating +
-					tempReviews[5].rating ==
-				0
-			) {
+			if (tempReviews[0].rating + tempReviews[1].rating + tempReviews[2].rating + tempReviews[3].rating + tempReviews[4].rating + tempReviews[5].rating == 0) {
 				setPhysicianScores([]);
 			} else {
 				setAppointmentScores(tempReviews);
@@ -154,9 +134,7 @@ const DashboardPatient = () => {
 			const response = await axios.get(`${apiURL}appointments/`, {
 				httpsAgent: agent,
 			});
-			response.data.appointments == undefined
-				? setAppointments([])
-				: setAppointments(response.data.appointments);
+			response.data.appointments == undefined ? setAppointments([]) : setAppointments(response.data.appointments);
 		} catch (error) {
 			toast.error("Error al cargar turnos");
 			console.error(error);
@@ -168,9 +146,7 @@ const DashboardPatient = () => {
 			const response = await axios.get(`${apiURL}specialties`, {
 				httpsAgent: agent,
 			});
-			response.data.specialties == undefined
-				? setSpecialties([])
-				: setSpecialties(response.data.specialties);
+			response.data.specialties == undefined ? setSpecialties([]) : setSpecialties(response.data.specialties);
 		} catch (error) {
 			toast.error("Error al cargar especialidades");
 			console.error(error);
@@ -180,15 +156,10 @@ const DashboardPatient = () => {
 	const fetchPhysicians = async (specialty) => {
 		try {
 			if (specialty) {
-				const response = await axios.get(
-					`${apiURL}physicians/specialty/${specialty}`,
-					{
-						httpsAgent: agent,
-					}
-				);
-				response.data.physicians == undefined
-					? setDoctors([])
-					: setDoctors(response.data.physicians);
+				const response = await axios.get(`${apiURL}physicians/specialty/${specialty}`, {
+					httpsAgent: agent,
+				});
+				response.data.physicians == undefined ? setDoctors([]) : setDoctors(response.data.physicians);
 			} else {
 				setDoctors([]);
 				setPhysiciansAgenda({});
@@ -204,9 +175,7 @@ const DashboardPatient = () => {
 		console.log(appointment);
 		console.log(editingAppointment);
 
-		console.log(
-			doctors.filter((doctor) => doctor.id == appointment.physician.id)
-		);
+		console.log(doctors.filter((doctor) => doctor.id == appointment.physician.id));
 		setIsEditModalOpen(true);
 		setEditingAppointment({
 			id: appointment.id,
@@ -260,12 +229,8 @@ const DashboardPatient = () => {
 
 	const saveAgenda = (doctorId) => {
 		if (doctorId) {
-			console.log(
-				doctors.filter((doctor) => doctor.id == doctorId)[0].agenda
-			);
-			setPhysiciansAgenda(
-				doctors.filter((doctor) => doctor.id == doctorId)[0].agenda
-			);
+			console.log(doctors.filter((doctor) => doctor.id == doctorId)[0].agenda);
+			setPhysiciansAgenda(doctors.filter((doctor) => doctor.id == doctorId)[0].agenda);
 			getPhysicianScores(doctorId);
 		} else {
 			setPhysiciansAgenda({});
@@ -281,12 +246,9 @@ const DashboardPatient = () => {
 		setShowModal(false);
 		toast.info("Eliminando turno...");
 		try {
-			await axios.delete(
-				`${apiURL}appointments/${appointmentIdToDelete}`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			await axios.delete(`${apiURL}appointments/${appointmentIdToDelete}`, {
+				httpsAgent: agent,
+			});
 			toast.success("Turno eliminado exitosamente");
 			fetchAppointments();
 			setAppointmentIdToDelete(null); // Limpiar el ID del turno después de eliminar
@@ -363,13 +325,7 @@ const DashboardPatient = () => {
 		<div className={styles.dashboard}>
 			{/* Modal de edición */}
 			{isEditModalOpen && (
-				<Modal
-					ariaHideApp={false}
-					isOpen={isEditModalOpen}
-					onRequestClose={handleCloseEditModal}
-					style={customStyles}
-					contentLabel="Example Modal"
-				>
+				<Modal ariaHideApp={false} isOpen={isEditModalOpen} onRequestClose={handleCloseEditModal} style={customStyles} contentLabel="Example Modal">
 					{/* Campos de edición de especialidad, médico y fecha */}
 
 					<div className={styles.form}>
@@ -390,41 +346,22 @@ const DashboardPatient = () => {
 							showTimeSelect
 							inline
 							filterDate={(date) => {
-								if (
-									editingAppointment.doctor.agenda
-										.working_days
-								) {
-									return editingAppointment.doctor.agenda.working_days.includes(
-										date.getDay()
-									);
+								if (editingAppointment.doctor.agenda.working_days) {
+									return editingAppointment.doctor.agenda.working_days.includes(date.getDay());
 								}
 								return false;
 							}}
 							minDate={new Date()}
 							filterTime={(time) => {
 								if (
-									editingAppointment.doctor.agenda
-										.appointments &&
-									!editingAppointment.doctor.agenda.appointments.includes(
-										Math.round(time.getTime() / 1000)
-									) &&
-									editingAppointment.doctor.agenda
-										.working_hours &&
+									editingAppointment.doctor.agenda.appointments &&
+									!editingAppointment.doctor.agenda.appointments.includes(Math.round(time.getTime() / 1000)) &&
+									editingAppointment.doctor.agenda.working_hours &&
 									time >= new Date()
 								) {
-									let workingHour =
-										editingAppointment.doctor.agenda.working_hours.filter(
-											(workingHour) =>
-												workingHour.day_of_week ===
-												date.getDay()
-										)[0];
-									let parsedTime =
-										time.getHours() +
-										time.getMinutes() / 60;
-									return (
-										workingHour.start_time <= parsedTime &&
-										workingHour.finish_time > parsedTime
-									);
+									let workingHour = editingAppointment.doctor.agenda.working_hours.filter((workingHour) => workingHour.day_of_week === date.getDay())[0];
+									let parsedTime = time.getHours() + time.getMinutes() / 60;
+									return workingHour.start_time <= parsedTime && workingHour.finish_time > parsedTime;
 								}
 								return false;
 							}}
@@ -454,52 +391,16 @@ const DashboardPatient = () => {
 
 			{/* Modal de ratings */}
 			{isRatingModalOpen && (
-				<Modal
-					ariaHideApp={false}
-					isOpen={isRatingModalOpen}
-					onRequestClose={handleCloseRatingModal}
-					style={ratingModalStyles}
-					contentLabel="Example Modal"
-				>
-					<div
-						key={appointmentScores.key}
-						className={styles["reviews-container"]}
-					>
+				<Modal ariaHideApp={false} isOpen={isRatingModalOpen} onRequestClose={handleCloseRatingModal} style={ratingModalStyles} contentLabel="Example Modal">
+					<div key={appointmentScores.key} className={styles["reviews-container"]}>
 						{appointmentScores.length > 0 ? (
 							<>
 								{appointmentScores.map((review) => (
-									<div
-										key={review.id}
-										className={styles["review"]}
-									>
-										<div
-											className={
-												styles["review-cards-container"]
-											}
-										>
-											<div
-												className={
-													styles["review-card"]
-												}
-											>
-												<div
-													className={
-														styles[
-															"review-card-title"
-														]
-													}
-												>
-													{review.type}
-												</div>
-												<div
-													className={
-														styles[
-															"review-card-content"
-														]
-													}
-												>
-													{review.rating}
-												</div>
+									<div key={review.id} className={styles["review"]}>
+										<div className={styles["review-cards-container"]}>
+											<div className={styles["review-card"]}>
+												<div className={styles["review-card-title"]}>{review.type}</div>
+												<div className={styles["review-card-content"]}>{review.rating}</div>
 											</div>
 										</div>
 									</div>
@@ -512,16 +413,10 @@ const DashboardPatient = () => {
 					</div>
 
 					{/* Botones de Guardar y Cerrar */}
-					<button
-						className={styles["standard-button"]}
-						onClick={() => {}}
-					>
+					<button className={styles["standard-button"]} onClick={() => {}}>
 						Guardar
 					</button>
-					<button
-						className={styles["standard-button"]}
-						onClick={() => handleCloseRatingModal()}
-					>
+					<button className={styles["standard-button"]} onClick={() => handleCloseRatingModal()}>
 						Cerrar
 					</button>
 				</Modal>
@@ -537,9 +432,7 @@ const DashboardPatient = () => {
 				<>
 					<div className={styles["tab-content"]}>
 						<div className={styles.form}>
-							<div className={styles["title"]}>
-								Mis Proximos Turnos
-							</div>
+							<div className={styles["title"]}>Mis Proximos Turnos</div>
 							<Image
 								src="/refresh_icon.png"
 								alt="Notificaciones"
@@ -557,87 +450,29 @@ const DashboardPatient = () => {
 									<div>
 										{/* ... */}
 										{appointments.map((appointment) => (
-											<div
-												key={appointment.id}
-												className={
-													styles["appointment"]
-												}
-											>
-												<div
-													className={
-														styles["subtitle"]
-													}
-												>
-													{
-														appointment.physician
-															.specialty
-													}
-												</div>
+											<div key={appointment.id} className={styles["appointment"]}>
+												<div className={styles["subtitle"]}>{appointment.physician.specialty}</div>
 												<p>
-													Profesional:{" "}
-													{appointment.physician
-														.first_name +
-														" " +
-														appointment.physician
-															.last_name}
+													Profesional: {appointment.physician.first_name + " " + appointment.physician.last_name}
 													<a
 														onClick={() => {
-															handleOpenRatingModal(
-																appointment
-																	.physician
-																	.id
-															);
+															handleOpenRatingModal(appointment.physician.id);
 														}}
 														style={{
-															textDecoration:
-																"none",
+															textDecoration: "none",
 															color: "blue",
 														}}
 													>
-														{"    "} (Ver
-														Puntuacion)
+														{"    "} (Ver Puntuacion)
 													</a>
 												</p>
 
-												<p>
-													Fecha y hora:{" "}
-													{new Date(
-														appointment.date * 1000
-													).toLocaleString("es-AR")}
-												</p>
-												<div
-													className={
-														styles[
-															"appointment-buttons-container"
-														]
-													}
-												>
-													<button
-														className={
-															styles[
-																"edit-button"
-															]
-														}
-														onClick={() =>
-															handleOpenEditModal(
-																appointment
-															)
-														}
-													>
+												<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR")}</p>
+												<div className={styles["appointment-buttons-container"]}>
+													<button className={styles["edit-button"]} onClick={() => handleOpenEditModal(appointment)}>
 														Modificar
 													</button>
-													<button
-														className={
-															styles[
-																"delete-button"
-															]
-														}
-														onClick={() =>
-															handleDeleteClick(
-																appointment.id
-															)
-														}
-													>
+													<button className={styles["delete-button"]} onClick={() => handleDeleteClick(appointment.id)}>
 														Cancelar
 													</button>
 												</div>
@@ -646,9 +481,7 @@ const DashboardPatient = () => {
 									</div>
 								) : (
 									// If there are no appointments, display the message
-									<div className={styles["subtitle"]}>
-										No hay turnos pendientes
-									</div>
+									<div className={styles["subtitle"]}>No hay turnos pendientes</div>
 								)}
 								{/* ... */}
 							</div>
@@ -663,14 +496,10 @@ const DashboardPatient = () => {
 
 						{/* Formulario de selección de especialidad y doctor */}
 						<form className={styles.form} onSubmit={handleSubmit}>
-							<div className={styles["title"]}>
-								Solicitar un nuevo turno
-							</div>
+							<div className={styles["title"]}>Solicitar un nuevo turno</div>
 
 							{/* Selector de especialidades */}
-							<div className={styles["subtitle"]}>
-								Seleccione una especialidad
-							</div>
+							<div className={styles["subtitle"]}>Seleccione una especialidad</div>
 							<select
 								id="specialty"
 								value={selectedSpecialty}
@@ -683,16 +512,13 @@ const DashboardPatient = () => {
 								<option value="">Especialidad</option>
 								{specialties.map((specialty) => (
 									<option key={specialty} value={specialty}>
-										{specialty.charAt(0).toUpperCase() +
-											specialty.slice(1)}
+										{specialty.charAt(0).toUpperCase() + specialty.slice(1)}
 									</option>
 								))}
 							</select>
 
 							{/* Selector de médicos */}
-							<div className={styles["subtitle"]}>
-								Seleccione un médico
-							</div>
+							<div className={styles["subtitle"]}>Seleccione un médico</div>
 							<select
 								id="doctor"
 								value={selectedDoctor}
@@ -705,11 +531,7 @@ const DashboardPatient = () => {
 							>
 								<option value="">Médico</option>
 								{doctors.map((doctor) => (
-									<option
-										key={doctor.id}
-										value={doctor.id}
-										agenda={doctor.agenda}
-									>
+									<option key={doctor.id} value={doctor.id} agenda={doctor.agenda}>
 										{doctor.first_name} {doctor.last_name}
 									</option>
 								))}
@@ -727,49 +549,15 @@ const DashboardPatient = () => {
 								</Tooltip>
 							</div>
 
-							<div
-								key={physicianScores.key}
-								className={styles["reviews-container"]}
-							>
+							<div key={physicianScores.key} className={styles["reviews-container"]}>
 								{physicianScores.length > 0 ? (
 									<>
 										{physicianScores.map((review) => (
-											<div
-												key={review.id}
-												className={styles["review"]}
-											>
-												<div
-													className={
-														styles[
-															"review-cards-container"
-														]
-													}
-												>
-													<div
-														className={
-															styles[
-																"review-card"
-															]
-														}
-													>
-														<div
-															className={
-																styles[
-																	"review-card-title"
-																]
-															}
-														>
-															{review.type}
-														</div>
-														<div
-															className={
-																styles[
-																	"review-card-content"
-																]
-															}
-														>
-															{review.rating}
-														</div>
+											<div key={review.id} className={styles["review"]}>
+												<div className={styles["review-cards-container"]}>
+													<div className={styles["review-card"]}>
+														<div className={styles["review-card-title"]}>{review.type}</div>
+														<div className={styles["review-card-content"]}>{review.rating}</div>
 													</div>
 												</div>
 											</div>
@@ -790,9 +578,7 @@ const DashboardPatient = () => {
 							</div>
 
 							{/* Selector de fechas */}
-							<div className={styles["subtitle"]}>
-								Seleccione una fecha
-							</div>
+							<div className={styles["subtitle"]}>Seleccione una fecha</div>
 							<div className={styles["physician-info-container"]}>
 								<div className={styles["datepicker-container"]}>
 									<DatePicker
@@ -808,9 +594,7 @@ const DashboardPatient = () => {
 										inline
 										filterDate={(date) => {
 											if (physiciansAgenda.working_days) {
-												return physiciansAgenda.working_days.includes(
-													date.getDay()
-												);
+												return physiciansAgenda.working_days.includes(date.getDay());
 											}
 											return false;
 										}}
@@ -818,32 +602,13 @@ const DashboardPatient = () => {
 										filterTime={(time) => {
 											if (
 												physiciansAgenda.appointments &&
-												!physiciansAgenda.appointments.includes(
-													Math.round(
-														time.getTime() / 1000
-													)
-												) &&
+												!physiciansAgenda.appointments.includes(Math.round(time.getTime() / 1000)) &&
 												physiciansAgenda.working_hours &&
 												time >= new Date()
 											) {
-												let workingHour =
-													physiciansAgenda.working_hours.filter(
-														(workingHour) =>
-															workingHour.day_of_week ===
-															date.getDay()
-													)[0];
-												let parsedTime =
-													time.getHours() +
-													time.getMinutes() / 60;
-												return (
-													workingHour &&
-													workingHour.start_time &&
-													workingHour.finish_time &&
-													workingHour.start_time <=
-														parsedTime &&
-													workingHour.finish_time >
-														parsedTime
-												);
+												let workingHour = physiciansAgenda.working_hours.filter((workingHour) => workingHour.day_of_week === date.getDay())[0];
+												let parsedTime = time.getHours() + time.getMinutes() / 60;
+												return workingHour && workingHour.start_time && workingHour.finish_time && workingHour.start_time <= parsedTime && workingHour.finish_time > parsedTime;
 											}
 											return false;
 										}}
@@ -853,14 +618,8 @@ const DashboardPatient = () => {
 
 							<button
 								type="submit"
-								className={`${styles["submit-button"]} ${
-									!selectedDoctor || disabledAppointmentButton
-										? styles["disabled-button"]
-										: ""
-								}`}
-								disabled={
-									!selectedDoctor || disabledAppointmentButton
-								}
+								className={`${styles["submit-button"]} ${!selectedDoctor || disabledAppointmentButton ? styles["disabled-button"] : ""}`}
+								disabled={!selectedDoctor || disabledAppointmentButton}
 							>
 								Solicitar turno
 							</button>

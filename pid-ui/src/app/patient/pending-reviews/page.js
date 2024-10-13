@@ -20,8 +20,7 @@ const DashboardPatient = () => {
 	const [isReviewModalOpen, setIsAddObervationModalOpen] = useState(false);
 	const [appointmentToReview, setAppointmentToReview] = useState("");
 	const [appointmentScores, setAppointmentScores] = useState([]);
-	const [disabledAddReviewButton, setDisabledAddReiewButton] =
-		useState(false);
+	const [disabledAddReviewButton, setDisabledAddReiewButton] = useState(false);
 	const router = useRouter();
 	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 	const [reviews, setReviews] = useState({
@@ -34,7 +33,7 @@ const DashboardPatient = () => {
 			rating: -1,
 		},
 		cleanliness: {
-			name: "Limpieza",
+			name: "Higiene",
 			rating: -1,
 		},
 		availability: {
@@ -57,12 +56,9 @@ const DashboardPatient = () => {
 
 	const fetchPendingReviews = async () => {
 		try {
-			const response = await axios.get(
-				`${apiURL}users/patient-pending-scores`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			const response = await axios.get(`${apiURL}users/patient-pending-scores`, {
+				httpsAgent: agent,
+			});
 			console.log(response.data);
 			setAppointments(response.data.pending_scores);
 			if (response.data.pending_scores.length === 0) {
@@ -88,8 +84,7 @@ const DashboardPatient = () => {
 		try {
 			let reviewsToSend = {};
 			Object.keys(reviews).forEach((review) => {
-				if (reviews[review].rating >= 0)
-					reviewsToSend[review] = reviews[review].rating;
+				if (reviews[review].rating >= 0) reviewsToSend[review] = reviews[review].rating;
 			});
 			const response = await axios.post(
 				`${apiURL}users/add-score`,
@@ -130,92 +125,37 @@ const DashboardPatient = () => {
 	return (
 		<>
 			{isReviewModalOpen && (
-				<Modal
-					ariaHideApp={false}
-					isOpen={isReviewModalOpen}
-					onRequestClose={handleCloseReviewModal}
-					style={ratingModalStyles}
-				>
+				<Modal ariaHideApp={false} isOpen={isReviewModalOpen} onRequestClose={handleCloseReviewModal} style={ratingModalStyles}>
 					<div className={styles["new-record-section"]}>
 						<div className={styles["title"]}>Carga de Reseña</div>
 
-						<div
-							key={reviews.key}
-							className={styles["reviews-container"]}
-						>
+						<div key={reviews.key} className={styles["reviews-container"]}>
 							{Object.keys(reviews).length > 0 ? (
 								<>
 									{Object.keys(reviews).map((review) => (
-										<div
-											key={review}
-											className={styles["review"]}
-										>
-											<div
-												className={
-													styles[
-														"review-cards-container"
-													]
-												}
-											>
-												<div
-													className={
-														styles["review-card"]
-													}
-												>
-													<div
-														className={
-															styles[
-																"review-card-title"
-															]
-														}
-													>
-														{reviews[review].name}
-													</div>
-													<div
-														className={
-															styles[
-																"review-card-content"
-															]
-														}
-													>
+										<div key={review} className={styles["review"]}>
+											<div className={styles["review-cards-container"]}>
+												<div className={styles["review-card"]}>
+													<div className={styles["review-card-title"]}>{reviews[review].name}</div>
+													<div className={styles["review-card-content"]}>
 														<select
 															onChange={(e) =>
 																setReviews({
 																	...reviews,
 																	[review]: {
-																		name: reviews[
-																			review
-																		].name,
-																		rating: Number(
-																			e
-																				.target
-																				.value
-																		),
+																		name: reviews[review].name,
+																		rating: Number(e.target.value),
 																	},
 																})
 															}
 														>
-															<option value={-1}>
-																N/A
-															</option>
-															<option value={0}>
-																Muy Malo
-															</option>
-															<option value={1}>
-																Malo
-															</option>
-															<option value={2}>
-																Neutro
-															</option>
-															<option value={3}>
-																Bueno
-															</option>
-															<option value={4}>
-																Muy Bueno
-															</option>
-															<option value={5}>
-																Excelente
-															</option>
+															<option value={-1}>N/A</option>
+															<option value={0}>Muy Malo</option>
+															<option value={1}>Malo</option>
+															<option value={2}>Neutro</option>
+															<option value={3}>Bueno</option>
+															<option value={4}>Muy Bueno</option>
+															<option value={5}>Excelente</option>
 														</select>
 													</div>
 												</div>
@@ -225,21 +165,11 @@ const DashboardPatient = () => {
 								</>
 							) : (
 								// If there are no reviews, display the message
-								<div className={styles["subtitle"]}>
-									No hay reviews
-								</div>
+								<div className={styles["subtitle"]}>No hay reviews</div>
 							)}
 						</div>
 
-						<button
-							className={`${styles["edit-button"]} ${
-								disabledAddReviewButton
-									? styles["disabled-button"]
-									: ""
-							}`}
-							onClick={addReview}
-							disabled={disabledAddReviewButton}
-						>
+						<button className={`${styles["edit-button"]} ${disabledAddReviewButton ? styles["disabled-button"] : ""}`} onClick={addReview} disabled={disabledAddReviewButton}>
 							Agregar
 						</button>
 					</div>
@@ -257,18 +187,10 @@ const DashboardPatient = () => {
 					<>
 						<div className={styles["tab-content"]}>
 							<div className={styles.form}>
-								<div className={styles["title"]}>
-									Turnos pendientes de reseña
-								</div>
+								<div className={styles["title"]}>Turnos pendientes de reseña</div>
+								<div className={styles["subtitle"]}>Usted tiene {appointments.length} turnos pendientes de reseña.</div>
 								<div className={styles["subtitle"]}>
-									Usted tiene {appointments.length} turnos
-									pendientes de reseña.
-								</div>
-								<div className={styles["subtitle"]}>
-									Por favor, seleccione un turno para dejar su
-									reseña; una vez que haya completado todas
-									sus reseñas podrá volver al menu principal y
-									solicitar un turno nuevo.
+									Por favor, seleccione un turno para dejar su reseña; una vez que haya completado todas sus reseñas podrá volver al menu principal y solicitar un turno nuevo.
 								</div>
 
 								<Image
@@ -286,54 +208,13 @@ const DashboardPatient = () => {
 									{appointments.length > 0 ? (
 										<div>
 											{appointments.map((appointment) => (
-												<div
-													key={appointment.id}
-													className={
-														styles["appointment"]
-													}
-												>
-													<div
-														className={
-															styles["subtitle"]
-														}
-													>
-														{appointment.specialty}
-													</div>
-													<p>
-														Profesional:{" "}
-														{appointment.first_name +
-															" " +
-															appointment.last_name}
-													</p>
+												<div key={appointment.id} className={styles["appointment"]}>
+													<div className={styles["subtitle"]}>{appointment.specialty}</div>
+													<p>Profesional: {appointment.first_name + " " + appointment.last_name}</p>
 
-													<p>
-														Fecha y hora:{" "}
-														{new Date(
-															appointment.date *
-																1000
-														).toLocaleString(
-															"es-AR"
-														)}
-													</p>
-													<div
-														className={
-															styles[
-																"appointment-buttons-container"
-															]
-														}
-													>
-														<button
-															className={
-																styles[
-																	"edit-button"
-																]
-															}
-															onClick={() =>
-																handleOpenReviewModal(
-																	appointment
-																)
-															}
-														>
+													<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR")}</p>
+													<div className={styles["appointment-buttons-container"]}>
+														<button className={styles["edit-button"]} onClick={() => handleOpenReviewModal(appointment)}>
 															Agregar reseña
 														</button>
 													</div>
@@ -342,9 +223,7 @@ const DashboardPatient = () => {
 										</div>
 									) : (
 										// If there are no appointments, display the message
-										<div className={styles["subtitle"]}>
-											No hay turnos pendientes
-										</div>
+										<div className={styles["subtitle"]}>No hay turnos pendientes</div>
 									)}
 								</div>
 							</div>

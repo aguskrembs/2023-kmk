@@ -1,526 +1,528 @@
 /* Estilos para la página de Dashboard */
 .dashboard {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
-    background-color: #fff;
-    padding: 0;
-    margin-top: 170px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	text-align: center;
+	background-color: #fff;
+	padding: 0;
+	margin-top: 170px;
 }
 
 /* Estilos para los mensajes de error */
 .error-message {
-    color: red;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+	color: red;
+	font-size: 1rem;
+	margin-bottom: 1rem;
 }
 
 /* Estilos para el título de la página de inicio de sesión */
 .title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #333;
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	color: #333;
 }
 .subtitle {
-    font-size: 1.5rem; /* Tamaño del subtítulo */
-    color: #333;
-    padding: 0.5rem;
+	font-size: 1.5rem; /* Tamaño del subtítulo */
+	color: #333;
+	padding: 0.5rem;
 }
 .subtitle:disabled {
-    color: #5d5d5d;
+	color: #5d5d5d;
 }
 
 /* Estilos para el contenido de la pestaña activa */
 .tab-content {
-    flex: 1;
-    padding: 2rem 1rem;
-    width: 100%;
+	flex: 1;
+	padding: 2rem 1rem;
+	width: 100%;
 }
 
 /* Estilos para el formulario de selección de especialidad y doctor */
 .form {
-    flex: 1;
-    align-self: flex-start;
-    display: flex;
-    width: 60rem;
-    max-width: 100%;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: 100%;
-    padding: 2rem;
-    margin-bottom: 1rem;
-    flex-direction: column;
+	flex: 1;
+	align-self: flex-start;
+	display: flex;
+	width: 60rem;
+	max-width: 100%;
+	margin: 0 auto;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: left;
+	width: 100%;
+	padding: 2rem;
+	margin-bottom: 1rem;
+	flex-direction: column;
 }
 
 .form label {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
+	font-size: 1rem;
+	margin-bottom: 0.5rem;
+	color: #333;
 }
 
 .form select {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
-    margin-bottom: 2rem;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
+	margin-bottom: 2rem;
 }
 
 .select {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
-    margin-bottom: 2rem;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
+	margin-bottom: 2rem;
 }
 
 .form option {
-    color: #000;
+	color: #000;
 }
 
 .form input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
 }
 
 .physician-info-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: top;
-    padding: 1rem 2rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	align-items: top;
+	padding: 1rem 2rem;
 }
 
 .datepicker-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: baseline;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	align-items: baseline;
 }
 
 .reviews-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    align-items: baseline;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
+	align-items: baseline;
 }
 
 .review-card {
-    margin: 1rem 0;
-    padding: 1rem;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 20rem;
+	margin: 1rem 0;
+	padding: 1rem;
+	background-color: #fff; /* Fondo blanco */
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 20rem;
 }
 
 .review-card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
+	font-size: 1.2rem;
+	font-weight: bold;
 }
 
 .review-card-content {
-    font-size: 1rem;
-    position: flex-end;
+	font-size: 1rem;
+	position: flex-end;
 }
 .schedule-day-modify {
-    padding: 1rem;
-    margin: 1rem 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 1rem;
+	margin: 1rem 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .schedule-day-modify h3 {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 .schedule-day-modify input[type="checkbox"] {
-    width: auto;
-    appearance: auto;
-    padding: 1rem;
+	width: auto;
+	appearance: auto;
+	padding: 1rem;
 }
 
 .time-picker-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: baseline;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	align-items: baseline;
 }
 
 .time-picker-container input {
-    width: 30%;
-    max-width: 20rem;
-    margin-bottom: 0;
+	width: 30%;
+	max-width: 20rem;
+	margin-bottom: 0;
 }
 
 .time-picker-container button {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .admin-section {
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    margin: 1rem 0;
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	margin: 1rem 0;
 }
 
 .admin-scrollable-section {
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    margin: 1rem 0;
-    overflow-y: scroll;
-    height: 15rem;
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	margin: 1rem 0;
+	overflow-y: scroll;
+	height: 15rem;
 }
 
 .specialty-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    margin: 0.5rem 0;
-    padding: 0.5rem 0.7rem;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	align-items: center;
+	margin: 0.5rem 0;
+	padding: 0.5rem 0.7rem;
+	background-color: #fff; /* Fondo blanco */
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos para la sección de "Mis Proximos Turnos" */
 .appointments-section {
-    margin-top: 0.5rem;
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 0 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	margin-top: 0.5rem;
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 0 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .appointment-buttons-container {
-    display: flex; /* Activa el diseño flexible */
-    justify-content: flex-end; /* Alinea los elementos al final (derecha) del contenedor */
-    flex-wrap: wrap;
+	display: flex; /* Activa el diseño flexible */
+	justify-content: flex-end; /* Alinea los elementos al final (derecha) del contenedor */
+	flex-wrap: wrap;
 }
 
 .appointment {
-    margin: 1rem 0;
-    padding: 1rem;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin: 1rem 0;
+	padding: 1rem;
+	background-color: #fff; /* Fondo blanco */
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .appointment p {
-    padding: 0 0.5rem;
-    font-size: 1.2rem;
-    color: #333;
+	padding: 0 0.5rem;
+	font-size: 1.2rem;
+	color: #333;
 }
 
 .my-estudios-section {
-    margin-top: 2rem;
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	margin-top: 2rem;
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .horizontal-scroll {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: scroll;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: scroll;
 }
 
 .estudio-card {
-    height: 13rem;
-    width: 10rem;
-    background-color: #909090;
-    margin: 5px;
-    border-radius: 5px;
-    display: flex;
-    transition: background-color 0.3s;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    flex-direction: column;
+	height: 13rem;
+	width: 10rem;
+	background-color: #909090;
+	margin: 5px;
+	border-radius: 5px;
+	display: flex;
+	transition: background-color 0.3s;
+	flex-wrap: wrap;
+	align-content: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .estudio-name {
-    color: rgb(56, 64, 79);
-    font-size: 1rem;
-    flex-wrap: wrap;
+	color: rgb(56, 64, 79);
+	font-size: 1rem;
+	flex-wrap: wrap;
 }
 
 .estudio-date {
-    color: rgb(56, 64, 79);
-    font-size: 0.7rem;
+	color: rgb(56, 64, 79);
+	font-size: 0.7rem;
 }
 
 .estudio-card:hover {
-    background-color: #707070;
+	background-color: #707070;
 }
 
 .file-upload-form {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    width: 100%;
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	width: 100%;
 }
 
 .file-upload-form input {
-    width: 50%;
-    padding: 0.5rem;
-    padding-top: 1.2rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
-    height: 80px;
-    margin-bottom: 0;
+	width: 50%;
+	padding: 0.5rem;
+	padding-top: 1.2rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
+	height: 80px;
+	margin-bottom: 0;
 }
 
 .file-upload-form button {
-    position: relative;
-    align-self: center;
-    margin-top: 0;
-    margin-right: 0;
+	position: relative;
+	align-self: center;
+	margin-top: 0;
+	margin-right: 0;
 }
 
 .file-upload-form input {
-    border: none;
-    outline: none;
-    background-color: transparent;
-    color: #333;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	color: #333;
 }
 
 .file-upload-form input[type="file"]::file-selector-button {
-    margin-right: 20px;
-    padding: 0.5rem 1rem;
-    background-color: rgb(38, 60, 132);
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-align: center;
-    top: 10rem;
+	margin-right: 20px;
+	padding: 0.5rem 1rem;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	text-align: center;
+	top: 10rem;
 }
 
 .file-upload-form input[type="file"]::file-selector-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .new-record-section {
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    /* margin-top: 6rem; */
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	/* margin-top: 6rem; */
 }
 
 .observation-input {
-    height: 200px;
-    resize: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    width: 100%;
+	height: 200px;
+	resize: none;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	width: 100%;
 }
 
 /* Estilos para la sección de "Fichas Medicas" */
 .records-section {
-    margin-top: 2rem;
-    background-color: #f5f5f5; /* Fondo gris claro */
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    display: flex;
-    flex-direction: column-reverse;
+	margin-top: 2rem;
+	background-color: #f5f5f5; /* Fondo gris claro */
+	padding: 1rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+	display: flex;
+	flex-direction: column-reverse;
 }
 
 .record-card {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 1rem;
+	padding: 1rem;
+	background-color: #fff; /* Fondo blanco */
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .record-date {
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    background-color: rgb(38, 60, 132); /* Fondo blanco */
-    border-radius: 5px;
-    color: #fff;
+	margin-bottom: 0.5rem;
+	padding: 0.5rem;
+	background-color: rgb(38, 60, 132); /* Fondo blanco */
+	border-radius: 5px;
+	color: #fff;
 }
 
 .record-observations {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    background-color: #fff; /* Fondo blanco */
-    border-radius: 5px;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+	background-color: #fff; /* Fondo blanco */
+	border-radius: 5px;
 }
 
 .textarea {
-    width: 100%;
-    height: 200px;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #000;
-    background-color: #fff;
-    appearance: none;
-    outline: none;
-    cursor: pointer;
+	width: 100%;
+	height: 200px;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #000;
+	background-color: #fff;
+	appearance: none;
+	outline: none;
+	cursor: pointer;
 }
 
 /* Estilos para BOTONES */
 .standard-button {
-    background-color: rgb(38, 60, 132);
-    color: #fff;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
 }
 .standard-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .submit-button {
-    padding: 0.5rem 1rem;
-    background-color: rgb(38, 60, 132);
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-    text-align: center;
+	padding: 0.5rem 1rem;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	width: 100%;
+	text-align: center;
 }
 .submit-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .approve-button {
-    background-color: #28a745; /* Cambia el color para el botón de aprobar */
-    color: #fff;
+	background-color: #28a745; /* Cambia el color para el botón de aprobar */
+	color: #fff;
 }
 .approve-button:hover {
-    background-color: #1e7e34; /* Cambia el color al pasar el mouse */
+	background-color: #1e7e34; /* Cambia el color al pasar el mouse */
 }
 
 .delete-button {
-    background-color: #ca1a1a; /* Cambia el color para el botón de eliminar */
-    color: #fff;
+	background-color: #ca1a1a; /* Cambia el color para el botón de eliminar */
+	color: #fff;
 }
 .delete-button:hover {
-    background-color: #a00000; /* Cambia el color al pasar el mouse */
+	background-color: #a00000; /* Cambia el color al pasar el mouse */
 }
 
 .edit-button {
-    background-color: rgb(38, 60, 132);
-    color: #fff;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
 }
 .edit-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .add-button {
-    background-color: rgb(38, 60, 132);
-    color: #fff;
-    width: fit-content;
+	background-color: rgb(38, 60, 132);
+	color: #fff;
+	width: fit-content;
 }
 .add-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .disabled-button {
-    background-color: #ccc;
-    cursor: not-allowed;
+	background-color: #ccc;
+	color: #fff;
+	cursor: not-allowed;
 }
 .disabled-button:hover {
-    background-color: #ccc;
-    cursor: not-allowed;
+	background-color: #ccc;
+	color: #fff;
+	cursor: not-allowed;
 }
 
 .upload-button {
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-    margin: 10px 5px;
-    font-size: 16px;
-    background-color: rgb(38, 60, 132);
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-right: 10px;
+	margin: 10px 5px;
+	font-size: 16px;
+	background-color: rgb(38, 60, 132);
 }
 .upload-button:hover {
-    background-color: rgb(17, 38, 106);
+	background-color: rgb(17, 38, 106);
 }
 
 .disabled-input {
-    background-color: #ccc;
-    cursor: not-allowed;
+	background-color: #ccc;
+	cursor: not-allowed;
 }
 
 .refresh-icon {
-    width: 35px;
-    height: auto;
-    cursor: pointer;
-    position: absolute;
-    right: 3rem;
-    transition: brightness 0.3s;
+	width: 35px;
+	height: auto;
+	cursor: pointer;
+	position: absolute;
+	right: 3rem;
+	transition: brightness 0.3s;
 }
 .refresh-icon:hover {
-    filter: brightness(0.5);
+	filter: brightness(0.5);
 }
