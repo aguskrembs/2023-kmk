@@ -28,26 +28,6 @@ class Medication:
         self.id = id
         self.created_at = created_at or datetime.now()
 
-    @staticmethod
-    def get_by_id(med_id):
-        med_doc = db.collection("meds").document(med_id).get()
-        if not med_doc.exists:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Medication not found",
-            )
-        return med_doc.to_dict()
-
-    @staticmethod
-    def get_all():
-        meds = db.collection("meds").get()
-        return [med.to_dict() for med in meds]
-
-    @staticmethod
-    def get_by_physician(physician_id):
-        meds = db.collection("meds").where("created_by", "==", physician_id).get()
-        return [med.to_dict() for med in meds]
-
     def create(self):
         new_med_ref = db.collection("meds").document()
         
@@ -73,6 +53,26 @@ class Medication:
         })
         self.id = new_med_ref.id
         return {"message": "Medication created successfully", "med_id": self.id}
+    
+    @staticmethod
+    def get_all():
+        meds = db.collection("meds").get()
+        return [med.to_dict() for med in meds]
+
+    @staticmethod
+    def get_by_physician(physician_id):
+        meds = db.collection("meds").where("created_by", "==", physician_id).get()
+        return [med.to_dict() for med in meds]
+    
+    @staticmethod
+    def get_by_id(med_id):
+        med_doc = db.collection("meds").document(med_id).get()
+        if not med_doc.exists:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Medication not found",
+            )
+        return med_doc.to_dict()
 
     @staticmethod
     def update(med_id, updated_data: dict):
@@ -84,8 +84,6 @@ class Medication:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Medication not found",
             )
-        
-        # Actualizar la medicación
         med_ref.update(updated_data)
         return {"message": "Medication updated successfully"}
 
@@ -99,7 +97,5 @@ class Medication:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Medication not found",
             )
-        
-        # Eliminar la medicación
         med_ref.delete()
         return {"message": "Medication deleted successfully"}

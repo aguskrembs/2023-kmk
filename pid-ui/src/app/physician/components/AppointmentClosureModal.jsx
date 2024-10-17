@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import styles from "../../styles/styles.module.css";
 import https from "https";
@@ -7,11 +7,13 @@ import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
 
 export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObervationModalOpen }) => {
-	const { appointmentToClose, fetchAppointments } = usePhysician();
+	const { appointmentToClose, fetchAppointments, meds, setMeds, fetchMeds } = usePhysician();
 	const [startTime, setStartTime] = useState("");
 	const [newObservationContent, setNewObservationContent] = useState("");
 	const [appointmentAttended, setAppointmentAttended] = useState(true);
 	const [disabledCloseAppointmentButton, setDisabledCloseAppointmentButton] = useState(false);
+	const [prescribedMedicationId, setPrescribedMedicationId] = useState("");
+	const [prescriptionDetail, setPrescriptionDetail] = useState("");
 	const [reviews, setReviews] = useState({
 		puntuality: { name: "Puntualidad", rating: -1 },
 		cleanliness: { name: "Higiene", rating: -1 },
@@ -45,6 +47,14 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 		let date = new Date(appointmentToClose.date * 1000);
 		date.setHours(hour);
 		date.setMinutes(minutes);
+
+		console.log("###CIERRE DEL TURNO");
+		console.log(appointmentToClose);
+		console.log(startTime);
+		console.log(newObservationContent);
+		console.log(prescribedMedicationId);
+		console.log(prescriptionDetail);
+		console.log(reviews);
 
 		try {
 			// Cierra el turno
@@ -85,6 +95,27 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 			console.error(error);
 		}
 
+		if (prescribedMedicationId !== "") {
+			try {
+				//Añade la receta, si es que existe
+				await axios.post(
+					`${apiURL}prescriptions/create-prescription`,
+					{
+						appointment_id: appointmentToClose.id,
+						patient_id: appointmentToClose.patient.id,
+						med_id: prescribedMedicationId,
+						prescription_detail: prescriptionDetail,
+					},
+					{
+						httpsAgent: agent,
+					}
+				);
+			} catch (error) {
+				toast.error("Error al crear la receta");
+				console.error(error);
+			}
+		}
+
 		try {
 			// Añade la puntuación
 			let reviewsToSend = {};
@@ -110,6 +141,13 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 		setDisabledCloseAppointmentButton(false);
 	};
 
+	useEffect(() => {
+		fetchMeds().catch((error) => {
+			console.error(error);
+			setIsLoading(false);
+			toast.error("Error al obtener los medicamentos disponibles");
+		});
+	}, []);
 	return (
 		<Modal
 			ariaHideApp={false}
@@ -150,6 +188,26 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 								value={newObservationContent}
 								onChange={(e) => setNewObservationContent(e.target.value)}
 								placeholder="Escribe una nueva observación"
+								required
+								className={styles["observation-input"]}
+							/>
+
+							{/* Campos para ingresar la receta */}
+							<div className={styles["subtitle"]}>Medicamento Recetado</div>
+							<select value={prescribedMedicationId} onChange={(e) => setPrescribedMedicationId(e.target.value)} required className={styles["select"]}>
+								<option value="">Seleccione un medicamento</option>
+								{meds.map((med) => (
+									<option key={med.id} value={med.id}>
+										{med.name} {med.dose}
+									</option>
+								))}
+							</select>
+
+							<div className={styles["subtitle"]}>Indicación de Consumo</div>
+							<textarea
+								value={prescriptionDetail}
+								onChange={(e) => setPrescriptionDetail(e.target.value)}
+								placeholder="Ingrese las instrucciones"
 								required
 								className={styles["observation-input"]}
 							/>

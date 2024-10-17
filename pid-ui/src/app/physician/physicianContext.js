@@ -15,6 +15,7 @@ export const PhysicianProvider = ({ children }) => {
 	const [appointmentToClose, setAppointmentToClose] = useState({});
 	const [pendingAppointments, setPendingAppointments] = useState([]);
 	const [meds, setMeds] = useState([]);
+	const [physicianMeds, setPhysicianMeds] = useState([]);
 
 	//CONFIRMED APPOINTMENTS
 	const fetchAppointments = async (showToast) => {
@@ -86,11 +87,46 @@ export const PhysicianProvider = ({ children }) => {
 
 	const fetchMeds = async (showToast) => {
 		try {
-			const response = await axios.get(`${apiURL}medications/medications`, {
+			const response = await axios.get(`${apiURL}medications`, {
 				httpsAgent: agent,
 			});
-			console.log(response);
-			setMeds(response.data ?? []);
+			const sortedMeds = response.data
+				?.map((med) => ({
+					...med,
+					numericDose: parseFloat(med.dose.replace(/[^\d]/g, "")), // Convertir dosis a número
+				}))
+				.sort((a, b) => {
+					const nameComparison = a.name.localeCompare(b.name); // Ordenar por nombre
+					if (nameComparison !== 0) return nameComparison; // Si son distintos nombres, devolver esa comparación
+					return a.numericDose - b.numericDose; // Si los nombres son iguales, ordenar por dosis numérica
+				});
+
+			setMeds(sortedMeds ?? []);
+			showToast && toast.success("Medicamentos obtenidos exitosamente");
+		} catch (error) {
+			console.error(error);
+			toast.error("Error al obtener los medicamentos");
+		}
+	};
+
+	//MEDICATIONS
+	const fetchMedsByPhysician = async (showToast) => {
+		try {
+			const response = await axios.get(`${apiURL}medications/by-physician`, {
+				httpsAgent: agent,
+			});
+			const sortedMeds = response.data
+				?.map((med) => ({
+					...med,
+					numericDose: parseFloat(med.dose.replace(/[^\d]/g, "")), // Convertir dosis a número
+				}))
+				.sort((a, b) => {
+					const nameComparison = a.name.localeCompare(b.name); // Ordenar por nombre
+					if (nameComparison !== 0) return nameComparison; // Si son distintos nombres, devolver esa comparación
+					return a.numericDose - b.numericDose; // Si los nombres son iguales, ordenar por dosis numérica
+				});
+
+			setPhysicianMeds(sortedMeds ?? []);
 			showToast && toast.success("Medicamentos obtenidos exitosamente");
 		} catch (error) {
 			console.error(error);
@@ -101,11 +137,11 @@ export const PhysicianProvider = ({ children }) => {
 	const handleAddMed = async (med, setShowAddModal) => {
 		setShowAddModal(false);
 		try {
-			await axios.post(`${apiURL}medications/medications`, med, {
+			await axios.post(`${apiURL}medications/create-medication`, med, {
 				httpsAgent: agent,
 			});
 			toast.success("Medicamento agregado exitosamente");
-			fetchMeds();
+			fetchMedsByPhysician();
 		} catch (error) {
 			console.error(error);
 			toast.info(error.response.data.detail);
@@ -115,11 +151,11 @@ export const PhysicianProvider = ({ children }) => {
 	const handleUpdateMed = async (med, setShowEditModal) => {
 		setShowEditModal(false);
 		try {
-			await axios.put(`${apiURL}medications/medications/${med.id}`, med, {
+			await axios.put(`${apiURL}medications/${med.id}`, med, {
 				httpsAgent: agent,
 			});
 			toast.success("Medicamento editado exitosamente");
-			fetchMeds();
+			fetchMedsByPhysician();
 		} catch (error) {
 			console.error(error);
 			toast.error(error.response.data.detail);
@@ -129,11 +165,11 @@ export const PhysicianProvider = ({ children }) => {
 	const handleDeleteMed = async (medToDelete, setShowDeleteModal) => {
 		setShowDeleteModal(false);
 		try {
-			await axios.delete(`${apiURL}medications/medications/${medToDelete.id}`, {
+			await axios.delete(`${apiURL}medications/${medToDelete.id}`, {
 				httpsAgent: agent,
 			});
 			toast.success("Medicamento eliminado exitosamente");
-			fetchMeds();
+			fetchMedsByPhysician();
 		} catch (error) {
 			console.error(error);
 			toast.error(error.response.data.detail);
@@ -151,12 +187,15 @@ export const PhysicianProvider = ({ children }) => {
 				setPendingAppointments,
 				meds,
 				setMeds,
+				physicianMeds,
+				setPhysicianMeds,
 				fetchAppointments,
 				handleDeleteAppointment,
 				fetchPendingAppointments,
 				handleApproveAppointment,
 				handleDenyAppointment,
 				fetchMeds,
+				fetchMedsByPhysician,
 				handleAddMed,
 				handleUpdateMed,
 				handleDeleteMed,
