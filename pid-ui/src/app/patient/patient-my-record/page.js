@@ -6,6 +6,7 @@ import axios from "axios";
 import https from "https";
 import { Footer, Header, TabBar } from "../../components/header";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import { ReminderModal } from "../components/ReminderModal";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,6 +37,8 @@ const MyRecord = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [selectedFile, setSelectedFile] = useState("");
 	const [prescriptions, setPrescriptions] = useState([]);
+	const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
+	const [selectedPrescription, setSelectedPrescription] = useState(null);
 
 	const agent = new https.Agent({
 		rejectUnauthorized: false,
@@ -100,6 +103,11 @@ const MyRecord = () => {
 			console.error("Error al descargar el PDF:", error);
 			toast.error("Error al descargar el PDF");
 		}
+	};
+
+	const handleReminderClick = (prescription) => {
+		setSelectedPrescription(prescription);
+		setIsReminderModalOpen(true);
 	};
 
 	const handleDeleteClick = (file) => {
@@ -208,6 +216,13 @@ const MyRecord = () => {
 																Ver receta
 															</a>
 														)}
+													</TableCell>{" "}
+													<TableCell align="left">
+														{prescription && (
+															<a onClick={() => handleReminderClick(prescription)} style={{ color: "blue", textDecoration: "underline" }}>
+																Recordatorio
+															</a>
+														)}
 													</TableCell>
 												</TableRow>
 											);
@@ -282,6 +297,8 @@ const MyRecord = () => {
 									)}
 									{/* ... */}
 								</div>
+
+								<ReminderModal isOpen={isReminderModalOpen} closeModal={() => setIsReminderModalOpen(false)} prescription={selectedPrescription} />
 								{/* Modal de confirmación */}
 								<ConfirmationModal
 									isOpen={showModal}
