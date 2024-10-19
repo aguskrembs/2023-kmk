@@ -48,14 +48,6 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 		date.setHours(hour);
 		date.setMinutes(minutes);
 
-		console.log("###CIERRE DEL TURNO");
-		console.log(appointmentToClose);
-		console.log(startTime);
-		console.log(newObservationContent);
-		console.log(prescribedMedicationId);
-		console.log(prescriptionDetail);
-		console.log(reviews);
-
 		try {
 			// Cierra el turno
 			await axios.put(
@@ -133,7 +125,6 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 					httpsAgent: agent,
 				}
 			);
-			toast.info("Puntaje cargado exitosamente");
 		} catch (error) {
 			toast.error("Error al agregar el puntaje");
 			console.error(error);
