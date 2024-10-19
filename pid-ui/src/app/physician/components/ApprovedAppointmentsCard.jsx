@@ -72,7 +72,7 @@ export const ApprovedAppointmentsCard = () => {
 										<div className={styles["subtitle"]}>Paciente: {appointment.patient.first_name + " " + appointment.patient.last_name}</div>
 										<p>
 											Fecha y hora:
-											{new Date(appointment.date * 1000).toLocaleString("es-AR")}
+											{new Date(appointment.date * 1000).toLocaleString("es-AR", { hour12: false })}
 										</p>
 										<div className={styles["appointment-buttons-container"]}>
 											<button

@@ -170,12 +170,7 @@ const DashboardPatient = () => {
 		}
 	};
 
-	const handleOpenEditModal = (appointment) => {
-		setEditingAppointment({});
-		console.log(appointment);
-		console.log(editingAppointment);
-
-		console.log(doctors.filter((doctor) => doctor.id == appointment.physician.id));
+	const handleOpenEditModal = async (appointment) => {
 		setIsEditModalOpen(true);
 		setEditingAppointment({
 			id: appointment.id,
@@ -203,7 +198,7 @@ const DashboardPatient = () => {
 			);
 			fetchAppointments();
 			setIsEditModalOpen(false);
-			toast.info("Turno modificado exitosamente");
+			toast.info("Turno modificado exitosamente. Aguarde aprobación del mismo");
 		} catch (error) {
 			console.error(error);
 			toast.error("Error al modificar turno");
@@ -261,6 +256,7 @@ const DashboardPatient = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setDisabledAppointmentButton(true);
+		checkPendingReviews();
 		try {
 			toast.info("Solicitando turno...");
 			const response = await axios.post(
@@ -286,29 +282,6 @@ const DashboardPatient = () => {
 		setDisabledAppointmentButton(false);
 	};
 
-	const customStyles = {
-		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
-			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
-		},
-	};
-
-	const ratingModalStyles = {
-		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
-			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
-			width: "auto",
-		},
-	};
-
 	useEffect(() => {
 		axios.defaults.headers.common = {
 			Authorization: `bearer ${localStorage.getItem("token")}`,
@@ -325,9 +298,22 @@ const DashboardPatient = () => {
 		<div className={styles.dashboard}>
 			{/* Modal de edición */}
 			{isEditModalOpen && (
-				<Modal ariaHideApp={false} isOpen={isEditModalOpen} onRequestClose={handleCloseEditModal} style={customStyles} contentLabel="Example Modal">
-					{/* Campos de edición de especialidad, médico y fecha */}
-
+				<Modal
+					ariaHideApp={false}
+					isOpen={isEditModalOpen}
+					onRequestClose={handleCloseEditModal}
+					style={{
+						content: {
+							top: "50%",
+							left: "50%",
+							right: "auto",
+							bottom: "auto",
+							marginRight: "-50%",
+							transform: "translate(-50%, -50%)",
+						},
+					}}
+					contentLabel="Example Modal"
+				>
 					<div className={styles.form}>
 						<div className={styles["title"]}>Editar Cita</div>
 
@@ -337,16 +323,14 @@ const DashboardPatient = () => {
 						<DatePicker
 							locale="es"
 							selected={dateToEdit}
-							onChange={(date) => {
-								setDateToEdit(date);
-							}}
+							onChange={(date) => setDateToEdit(date)}
 							timeCaption="Hora"
 							timeIntervals={30}
 							showPopperArrow={false}
 							showTimeSelect
 							inline
 							filterDate={(date) => {
-								if (editingAppointment.doctor.agenda.working_days) {
+								if (editingAppointment.doctor?.agenda?.working_days) {
 									return editingAppointment.doctor.agenda.working_days.includes(date.getDay());
 								}
 								return false;
@@ -354,14 +338,17 @@ const DashboardPatient = () => {
 							minDate={new Date()}
 							filterTime={(time) => {
 								if (
-									editingAppointment.doctor.agenda.appointments &&
+									editingAppointment.doctor?.agenda?.appointments &&
 									!editingAppointment.doctor.agenda.appointments.includes(Math.round(time.getTime() / 1000)) &&
-									editingAppointment.doctor.agenda.working_hours &&
-									time >= new Date()
+									editingAppointment.doctor.agenda.working_hours
 								) {
-									let workingHour = editingAppointment.doctor.agenda.working_hours.filter((workingHour) => workingHour.day_of_week === date.getDay())[0];
-									let parsedTime = time.getHours() + time.getMinutes() / 60;
-									return workingHour.start_time <= parsedTime && workingHour.finish_time > parsedTime;
+									let workingHour = editingAppointment.doctor.agenda.working_hours.find((workingHour) => workingHour.day_of_week === dateToEdit.getDay());
+
+									// Verificamos que workingHour no sea undefined antes de acceder a sus propiedades
+									if (workingHour) {
+										let parsedTime = time.getHours() + time.getMinutes() / 60;
+										return workingHour.start_time <= parsedTime && workingHour.finish_time > parsedTime;
+									}
 								}
 								return false;
 							}}
@@ -369,12 +356,7 @@ const DashboardPatient = () => {
 					</div>
 
 					{/* Botones de Guardar y Cerrar */}
-					<button
-						className={styles["standard-button"]}
-						onClick={() => {
-							handleSaveAppointment();
-						}}
-					>
+					<button className={styles["standard-button"]} onClick={() => handleSaveAppointment()}>
 						Guardar
 					</button>
 					<button
@@ -391,7 +373,36 @@ const DashboardPatient = () => {
 
 			{/* Modal de ratings */}
 			{isRatingModalOpen && (
-				<Modal ariaHideApp={false} isOpen={isRatingModalOpen} onRequestClose={handleCloseRatingModal} style={ratingModalStyles} contentLabel="Example Modal">
+				<Modal
+					ariaHideApp={false}
+					isOpen={isRatingModalOpen}
+					onRequestClose={handleCloseRatingModal}
+					style={{
+						overlay: {
+							zIndex: 1020,
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							background: "rgba(255, 255, 255, 0.75)",
+							position: "fixed",
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+						},
+						content: {
+							position: "relative",
+							maxWidth: "60%",
+							width: "100%",
+							maxHeight: "120vh",
+							overflowY: "auto",
+							borderRadius: "8px",
+							padding: "20px",
+							background: "#fff",
+						},
+					}}
+					contentLabel="Example Modal"
+				>
 					<div key={appointmentScores.key} className={styles["reviews-container"]}>
 						{appointmentScores.length > 0 ? (
 							<>
@@ -412,10 +423,6 @@ const DashboardPatient = () => {
 						)}
 					</div>
 
-					{/* Botones de Guardar y Cerrar */}
-					<button className={styles["standard-button"]} onClick={() => {}}>
-						Guardar
-					</button>
 					<button className={styles["standard-button"]} onClick={() => handleCloseRatingModal()}>
 						Cerrar
 					</button>
@@ -467,7 +474,7 @@ const DashboardPatient = () => {
 													</a>
 												</p>
 
-												<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR")}</p>
+												<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR", { hour12: false })}</p>
 												<div className={styles["appointment-buttons-container"]}>
 													<button className={styles["edit-button"]} onClick={() => handleOpenEditModal(appointment)}>
 														Modificar

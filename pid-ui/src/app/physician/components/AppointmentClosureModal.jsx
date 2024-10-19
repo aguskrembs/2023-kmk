@@ -60,6 +60,7 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 					httpsAgent: agent,
 				}
 			);
+			toast.info("Turno cerrado exitosamente");
 		} catch (error) {
 			toast.error("Error al cerrar el turno");
 			console.error(error);
@@ -79,7 +80,6 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 					httpsAgent: agent,
 				}
 			);
-			toast.info("Turno cerrado exitosamente");
 			fetchAppointments();
 			handleCloseEditModal();
 		} catch (error) {

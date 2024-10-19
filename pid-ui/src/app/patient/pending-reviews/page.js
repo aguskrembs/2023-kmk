@@ -19,7 +19,6 @@ const DashboardPatient = () => {
 	const [appointments, setAppointments] = useState([]);
 	const [isReviewModalOpen, setIsAddObervationModalOpen] = useState(false);
 	const [appointmentToReview, setAppointmentToReview] = useState("");
-	const [appointmentScores, setAppointmentScores] = useState([]);
 	const [disabledAddReviewButton, setDisabledAddReiewButton] = useState(false);
 	const router = useRouter();
 	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -103,6 +102,10 @@ const DashboardPatient = () => {
 		setDisabledAddReiewButton(false);
 	};
 
+	const isRatingClosable = () => {
+		return !disabledAddReviewButton && Object.values(reviews).every((review) => review.rating >= 0);
+	};
+
 	const ratingModalStyles = {
 		content: {
 			top: "50%",
@@ -169,7 +172,7 @@ const DashboardPatient = () => {
 							)}
 						</div>
 
-						<button className={`${styles["edit-button"]} ${disabledAddReviewButton ? styles["disabled-button"] : ""}`} onClick={addReview} disabled={disabledAddReviewButton}>
+						<button className={`${styles["edit-button"]} ${!isRatingClosable() ? styles["disabled-button"] : ""}`} onClick={addReview} disabled={!isRatingClosable()}>
 							Agregar
 						</button>
 					</div>
@@ -212,7 +215,7 @@ const DashboardPatient = () => {
 													<div className={styles["subtitle"]}>{appointment.specialty}</div>
 													<p>Profesional: {appointment.first_name + " " + appointment.last_name}</p>
 
-													<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR")}</p>
+													<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR", { hour12: false })}</p>
 													<div className={styles["appointment-buttons-container"]}>
 														<button className={styles["edit-button"]} onClick={() => handleOpenReviewModal(appointment)}>
 															Agregar reseña
