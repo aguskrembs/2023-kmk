@@ -54,7 +54,6 @@ class Score:
             data = doc.to_dict()
 
             # Actualizar los campos en la base de datos
-            # Actualizar los campos en la base de datos
             doc_ref.update(
                 {
                     "physician_score": self.physician_score,

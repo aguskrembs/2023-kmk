@@ -13,9 +13,7 @@ const MedicalRecords = ({ searchParams }) => {
 	const apiURL = process.env.NEXT_PUBLIC_API_URL;
 	const [urlSearchParams, setUrlSearchParams] = useState(null);
 	const [physicianScores, setPatientScores] = useState([]);
-	const [patientId, setPatientId] = useState(
-		searchParams.patientId || urlSearchParams.get("patientId")
-	);
+	const [patientId, setPatientId] = useState(searchParams.patientId || urlSearchParams.get("patientId"));
 	const [record, setRecord] = useState({
 		name: "",
 		last_name: "",
@@ -32,8 +30,7 @@ const MedicalRecords = ({ searchParams }) => {
 	});
 
 	useEffect(() => {
-		if (window)
-			setUrlSearchParams(new URLSearchParams(window.location.search));
+		if (window) setUrlSearchParams(new URLSearchParams(window.location.search));
 	}, []);
 
 	const getPatientScores = async (id) => {
@@ -48,7 +45,7 @@ const MedicalRecords = ({ searchParams }) => {
 				{ id: 2, type: "Comunicacion", rating: 0 },
 				{ id: 3, type: "Asistencia", rating: 0 },
 				{ id: 4, type: "Trato", rating: 0 },
-				{ id: 5, type: "Limpieza", rating: 0 },
+				{ id: 5, type: "Higiene", rating: 0 },
 			];
 
 			tempReviews[0].rating = response.data.score_metrics.puntuality;
@@ -57,14 +54,7 @@ const MedicalRecords = ({ searchParams }) => {
 			tempReviews[3].rating = response.data.score_metrics.treat;
 			tempReviews[4].rating = response.data.score_metrics.cleanliness;
 
-			if (
-				tempReviews[0].rating +
-					tempReviews[1].rating +
-					tempReviews[2].rating +
-					tempReviews[3].rating +
-					tempReviews[4].rating ==
-				0
-			) {
+			if (tempReviews[0].rating + tempReviews[1].rating + tempReviews[2].rating + tempReviews[3].rating + tempReviews[4].rating == 0) {
 				setPatientScores([]);
 			} else {
 				setPatientScores(tempReviews);
@@ -77,12 +67,9 @@ const MedicalRecords = ({ searchParams }) => {
 
 	const fetchData = async () => {
 		try {
-			const response = await axios.get(
-				`${apiURL}records/get-record/${patientId}`,
-				{
-					httpsAgent: agent,
-				}
-			);
+			const response = await axios.get(`${apiURL}records/get-record/${patientId}`, {
+				httpsAgent: agent,
+			});
 			setRecord(response.data.record);
 			console.log(response);
 		} catch (error) {
@@ -145,59 +132,19 @@ const MedicalRecords = ({ searchParams }) => {
 									fetchMyAnalysis();
 								}}
 							/>
-							<div className={styles["subtitle"]}>
-								Fecha de nacimiento: {record.birth_date}
-							</div>
-							<div className={styles["subtitle"]}>
-								Genero: {record.gender}
-							</div>
-							<div className={styles["subtitle"]}>
-								Grupo sanguíneo: {record.blood_type}
-							</div>
+							<div className={styles["subtitle"]}>Fecha de nacimiento: {record.birth_date}</div>
+							<div className={styles["subtitle"]}>Genero: {record.gender}</div>
+							<div className={styles["subtitle"]}>Grupo sanguíneo: {record.blood_type}</div>
 
-							<div
-								key={physicianScores.key}
-								className={styles["reviews-container"]}
-							>
+							<div key={physicianScores.key} className={styles["reviews-container"]}>
 								{physicianScores.length > 0 ? (
 									<>
 										{physicianScores.map((review) => (
-											<div
-												key={review.id}
-												className={styles["review"]}
-											>
-												<div
-													className={
-														styles[
-															"review-cards-container"
-														]
-													}
-												>
-													<div
-														className={
-															styles[
-																"review-card"
-															]
-														}
-													>
-														<div
-															className={
-																styles[
-																	"review-card-title"
-																]
-															}
-														>
-															{review.type}
-														</div>
-														<div
-															className={
-																styles[
-																	"review-card-content"
-																]
-															}
-														>
-															{review.rating}
-														</div>
+											<div key={review.id} className={styles["review"]}>
+												<div className={styles["review-cards-container"]}>
+													<div className={styles["review-card"]}>
+														<div className={styles["review-card-title"]}>{review.type}</div>
+														<div className={styles["review-card-content"]}>{review.rating}</div>
 													</div>
 												</div>
 											</div>
@@ -218,76 +165,39 @@ const MedicalRecords = ({ searchParams }) => {
 							</div>
 
 							<div className={styles["my-estudios-section"]}>
-								<div className={styles["title"]}>
-									Estudios del paciente
-								</div>
+								<div className={styles["title"]}>Estudios del paciente</div>
 								<div className={styles["horizontal-scroll"]}>
 									{analysis.length > 0 ? (
 										analysis.map((uploaded_analysis) => {
 											return (
-												<a
-													className={
-														styles["estudio-card"]
-													}
-													key={uploaded_analysis.id}
-												>
+												<a className={styles["estudio-card"]} key={uploaded_analysis.id}>
 													<div
 														onClick={() => {
-															handleDownload(
-																uploaded_analysis.url
-															);
+															handleDownload(uploaded_analysis.url);
 														}}
 													>
-														<div
-															className={
-																styles[
-																	"estudio-name"
-																]
-															}
-														>
-															{uploaded_analysis.file_name.substring(
-																0,
-																12
-															) + "..."}
-														</div>
+														<div className={styles["estudio-name"]}>{uploaded_analysis.file_name.substring(0, 12) + "..."}</div>
 														<Image
 															src="/document.png"
 															alt=""
-															className={
-																styles[
-																	"document-icon"
-																]
-															}
+															className={styles["document-icon"]}
 															style={{
-																alignSelf:
-																	"center",
+																alignSelf: "center",
 																margin: "auto",
 															}}
 															width={100}
 															height={100}
 														/>
 														<div
-															className={
-																styles[
-																	"estudio-date"
-																]
-															}
+															className={styles["estudio-date"]}
 															style={{
-																alignSelf:
-																	"center",
+																alignSelf: "center",
 																margin: "auto",
-																display:
-																	"table",
-																padding:
-																	"5px 0",
+																display: "table",
+																padding: "5px 0",
 															}}
 														>
-															{new Date(
-																uploaded_analysis.uploaded_at *
-																	1000
-															).toLocaleDateString(
-																"es-AR"
-															)}
+															{new Date(uploaded_analysis.uploaded_at * 1000).toLocaleDateString("es-AR")}
 														</div>
 													</div>
 												</a>
@@ -310,57 +220,19 @@ const MedicalRecords = ({ searchParams }) => {
 							<div className={styles["records-section"]}>
 								{record.observations.length > 0 ? (
 									<>
-										{record.observations.map(
-											(observation, index) => {
-												return (
-													<div
-														className={
-															styles[
-																"record-card"
-															]
-														}
-														key={index}
-													>
-														<div
-															className={
-																styles[
-																	"record-date"
-																]
-															}
-														>
-															Observacion del{" "}
-															{new Date(
-																observation.appointment_date *
-																	1000
-															).toLocaleDateString(
-																"es-AR"
-															)}{" "}
-															- Médico:{" "}
-															{
-																observation.physician
-															}
-														</div>
-														<div
-															className={
-																styles[
-																	"record-observations"
-																]
-															}
-														>
-															{
-																observation.observation
-															}
-														</div>
+										{record.observations.map((observation, index) => {
+											return (
+												<div className={styles["record-card"]} key={index}>
+													<div className={styles["record-date"]}>
+														Observacion del {new Date(observation.appointment_date * 1000).toLocaleDateString("es-AR")} - Médico: {observation.physician}
 													</div>
-												);
-											}
-										)}
+													<div className={styles["record-observations"]}>{observation.observation}</div>
+												</div>
+											);
+										})}
 									</>
 								) : (
-									<div className={styles["subtitle"]}>
-										No hay observaciones en esta historia
-										clinica
-									</div>
+									<div className={styles["subtitle"]}>No hay observaciones en esta historia clinica</div>
 								)}
 							</div>
 						</div>

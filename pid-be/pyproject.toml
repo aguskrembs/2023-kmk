@@ -20,6 +20,9 @@ firebase-admin = "^6.2.0"
 python-multipart = "^0.0.6"
 grpcio = "1.66.2"
 httpx = "^0.25.0"
+python-barcode = "^0.15.1"
+fpdf = "^1.7.2"
+pillow = "^11.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.3.1"

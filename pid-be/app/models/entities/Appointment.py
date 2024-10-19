@@ -226,17 +226,32 @@ class Appointment:
         Physician.schedule_appointment(id=self.physician_id, date=self.date)
 
     def close(self, updated_values):
-        db.collection("appointments").document(self.id).update(
-            {
-                **updated_values,
-                "start_time": updated_values["start_time"],
-                "attended": updated_values["attended"],
-                "status": "closed",
-            }
-        )
-        db.collection("patientsPendingToScore").document(self.patient_id).set(
-            {self.id: True}
-        )
+        appointment_doc = db.collection("appointments").document(self.id).get()
+        if appointment_doc.exists:
+            appointment_data = appointment_doc.to_dict()
+            if appointment_data["status"] == "pending":
+                print("[-] PENDING STATUS ERROR")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Can only close appointment that is approved",
+                )
+            else :
+                closedStatus = "not-attended"
+                print("[+] Cerrando turno")
+                if updated_values["attended"]==True:
+                    db.collection("patientsPendingToScore").document(self.patient_id).set(
+                        {self.id: True}
+                    )
+                    closedStatus = "closed"
+                
+                db.collection("appointments").document(self.id).update(
+                    {
+                        **updated_values,
+                        "start_time": updated_values["start_time"],
+                        "attended": updated_values["attended"],
+                        "status": closedStatus,
+                    }
+                )
 
     def create(self):
         if Patient.has_pending_scores(self.patient_id):
