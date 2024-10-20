@@ -13,7 +13,7 @@ export const PendingAppointmentsCard = () => {
 	const [showPendingModal, setPendingShowModal] = useState(false);
 	const [appointmentIdToDeny, setAppointmentIdToDeny] = useState(null);
 
-	const { pendingAppointments, fetchPendingAppointments, handleApproveAppointment, handleDenyAppointment } = usePhysician();
+	const { pendingAppointments, fetchAppointments, fetchPendingAppointments, handleApproveAppointment, handleDenyAppointment } = usePhysician();
 
 	const handleDenyClick = (appointmentId) => {
 		setAppointmentIdToDeny(appointmentId);
@@ -33,7 +33,7 @@ export const PendingAppointmentsCard = () => {
 	return (
 		<>
 			{isLoading ? (
-				<p>Cargando...</p>
+				""
 			) : (
 				<div className={styles.form}>
 					<div className={styles["title"]}>Turnos solicitados sin confirmar</div>
@@ -46,6 +46,7 @@ export const PendingAppointmentsCard = () => {
 						onClick={() => {
 							toast.info("Actualizando turnos...");
 							fetchPendingAppointments(true);
+							fetchAppointments();
 						}}
 					/>
 					<div className={styles["appointments-section"]}>

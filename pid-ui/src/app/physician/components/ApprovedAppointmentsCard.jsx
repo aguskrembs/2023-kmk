@@ -13,7 +13,7 @@ import { AppointmentClosureModal } from "./AppointmentClosureModal";
 
 export const ApprovedAppointmentsCard = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const { appointments, fetchAppointments, handleDeleteAppointment } = usePhysician();
+	const { appointments, fetchAppointments, fetchPendingAppointments, handleDeleteAppointment } = usePhysician();
 	const [isAddObservationModalOpen, setIsAddObervationModalOpen] = useState(false);
 	const { setAppointmentToClose } = usePhysician();
 	const [showModal, setShowModal] = useState(false);
@@ -55,6 +55,7 @@ export const ApprovedAppointmentsCard = () => {
 						height={200}
 						onClick={() => {
 							fetchAppointments(true);
+							fetchPendingAppointments();
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
