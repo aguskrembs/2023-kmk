@@ -246,37 +246,49 @@ def get_user_roles(user_id=Depends(Auth.is_logged_in)):
 @router.get(
     "/user-info",
     status_code=status.HTTP_200_OK,
-    response_model=Union[PhysicianResponse, PatientResponse],
     responses={
         401: {"model": UserInfoErrorResponse},
         403: {"model": UserInfoErrorResponse},
+        404: {"model": UserInfoErrorResponse},
         500: {"model": UserInfoErrorResponse},
     },
 )
 def get_user_info(user_id=Depends(Auth.is_logged_in)):
     """
     Get a user info.
-
-    This will return the user info.
-
-    This path operation will:
-
-    * Return the user info.
-    * Throw an error if user info retrieving process fails.
     """
     try:
-        if Patient.get_by_id(user_id):
-            return Patient.get_by_id(user_id)
-        if Physician.get_by_id(user_id):
-            return Physician.get_by_id(user_id)
-        else:
-            return JSONResponse(
-                status_code=status.HTTP_404_NOT_FOUND,
+        patient = Patient.get_by_id(user_id)
+        if patient:
+            return PatientResponse(
+                id=patient["id"],
+                first_name=patient["first_name"],
+                last_name=patient["last_name"],
+                email=patient["email"]
             )
-    except:
+
+        physician = Physician.get_by_id(user_id)
+        if physician:
+            return PhysicianResponse(
+                id=physician["id"],
+                first_name=physician["first_name"],
+                last_name=physician["last_name"],
+                specialty=physician["specialty"],
+                email=physician["email"],
+                tuition=physician["tuition"],
+                agenda=physician.get("agenda"),
+                appointments=physician.get("appointments", [])
+            )
+
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={"detail": "User not found"}
+        )
+
+    except Exception as e:
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={"detail": "Internal server error"},
+            content={"detail": f"Internal server error: {str(e)}"}
         )
 
 
