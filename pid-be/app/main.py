@@ -62,9 +62,9 @@ routers = [
 for router in routers:
     app.include_router(router)
 
-# @app.on_event("startup")
-# async def startup_event():
-#     asyncio.create_task(scheduler())
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(scheduler())
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
