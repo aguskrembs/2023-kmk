@@ -1,6 +1,4 @@
-import os
 from datetime import datetime, timedelta
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from firebase_admin import firestore
 from app.models.entities.Patient import Patient
 from app.models.entities.Prescription import Prescription
