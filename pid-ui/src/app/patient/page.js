@@ -38,13 +38,25 @@ const DashboardPatient = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [appointmentIdToDelete, setAppointmentIdToDelete] = useState(null);
 	const [disabledAppointmentButton, setDisabledAppointmentButton] = useState(false);
-
 	const [physicianScores, setPhysicianScores] = useState([]);
 	const [appointmentScores, setAppointmentScores] = useState([]);
 
 	const agent = new https.Agent({
 		rejectUnauthorized: false,
 	});
+
+	const clearTempData = () => {
+		setSelectedSpecialty("");
+		setSelectedDoctor("");
+		setPhysiciansAgenda({});
+		setDate(new Date());
+	};
+
+	const isFormValid = () => {
+		return (
+			selectedSpecialty && selectedDoctor && Object.keys(physiciansAgenda).length > 0 && date instanceof Date && !isNaN(date.getTime()) // Asegura que 'date' sea una fecha válida
+		);
+	};
 
 	const checkPendingReviews = async () => {
 		try {
@@ -275,6 +287,7 @@ const DashboardPatient = () => {
 			setSelectedSpecialty("");
 			setPhysiciansAgenda({});
 			fetchAppointments();
+			clearTempData();
 		} catch (error) {
 			console.error(error);
 			toast.error("Error al solicitar turno");
@@ -544,6 +557,7 @@ const DashboardPatient = () => {
 								))}
 							</select>
 
+							{/* Puntuaciones del médico */}
 							<div className={styles["subtitle"]}>
 								Puntuaciones del médico
 								<Tooltip
@@ -625,8 +639,8 @@ const DashboardPatient = () => {
 
 							<button
 								type="submit"
-								className={`${styles["submit-button"]} ${!selectedDoctor || disabledAppointmentButton ? styles["disabled-button"] : ""}`}
-								disabled={!selectedDoctor || disabledAppointmentButton}
+								className={`${styles["submit-button"]} ${!isFormValid() || disabledAppointmentButton ? styles["disabled-button"] : ""}`}
+								disabled={!isFormValid() || disabledAppointmentButton}
 							>
 								Solicitar turno
 							</button>
