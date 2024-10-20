@@ -23,4 +23,4 @@ def initialize_firebase_app():
             "universe_domain": os.environ.get("UNIVERSE_DOMAIN"),
         }
     )
-    initialize_app(credentials_to_use, {"storageBucket": "pid-kmk.appspot.com"})
+    initialize_app(credentials_to_use, {"storageBucket": "pid-kmk.appspot.com"}, name='pid-be-firebase' )

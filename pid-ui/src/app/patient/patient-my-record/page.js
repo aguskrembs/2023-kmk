@@ -38,11 +38,26 @@ const MyRecord = () => {
 	const [selectedFile, setSelectedFile] = useState("");
 	const [prescriptions, setPrescriptions] = useState([]);
 	const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
-	const [selectedPrescription, setSelectedPrescription] = useState(null);
+	const [selectedPrescription, setSelectedPrescription] = useState({});
+	const [reminders, setReminders] = useState([]);
 
 	const agent = new https.Agent({
 		rejectUnauthorized: false,
 	});
+
+	const fetchReminders = async (prescription, showToast) => {
+		try {
+			const response = await axios.get(`${apiURL}reminders/get_by_prescription_id/${prescription?.id}`, {
+				httpsAgent: agent,
+			});
+			setReminders(response.data);
+
+			showToast && toast.success("Medicamentos obtenidos exitosamente");
+		} catch (error) {
+			setReminders([]);
+			console.error(error);
+		}
+	};
 
 	const fetchRecord = async () => {
 		try {
@@ -106,6 +121,9 @@ const MyRecord = () => {
 	};
 
 	const handleReminderClick = (prescription) => {
+		fetchReminders(prescription).catch((error) => {
+			console.error(error);
+		});
 		setSelectedPrescription(prescription);
 		setIsReminderModalOpen(true);
 	};
@@ -197,6 +215,7 @@ const MyRecord = () => {
 											<TableCell align="left">Especialidad</TableCell>
 											<TableCell align="left">Observacion</TableCell>
 											<TableCell align="left">Receta</TableCell>
+											<TableCell align="left">Recordatorios</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
@@ -219,8 +238,8 @@ const MyRecord = () => {
 													</TableCell>{" "}
 													<TableCell align="left">
 														{prescription && (
-															<a onClick={() => handleReminderClick(prescription)} style={{ color: "blue", textDecoration: "underline" }}>
-																Recordatorio
+															<a onClick={() => handleReminderClick(prescription)} style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}>
+																Recordatorios
 															</a>
 														)}
 													</TableCell>
@@ -298,7 +317,13 @@ const MyRecord = () => {
 									{/* ... */}
 								</div>
 
-								<ReminderModal isOpen={isReminderModalOpen} closeModal={() => setIsReminderModalOpen(false)} prescription={selectedPrescription} />
+								<ReminderModal
+									isOpen={isReminderModalOpen}
+									closeModal={() => setIsReminderModalOpen(false)}
+									prescription={selectedPrescription}
+									reminders={reminders}
+									fetchReminders={() => fetchReminders(selectedPrescription?.id)}
+								/>
 								{/* Modal de confirmación */}
 								<ConfirmationModal
 									isOpen={showModal}

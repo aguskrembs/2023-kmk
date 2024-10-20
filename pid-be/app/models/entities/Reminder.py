@@ -55,3 +55,20 @@ class Reminder:
         if not reminder:
             raise HTTPException(status_code=404, detail="Reminder not found")
         return reminder
+    
+    @staticmethod
+    def get_by_prescription_id(prescription_id: str):
+        """
+        Retorna una lista de recordatorios para una receta específica.
+        """
+        reminders = db.collection("reminders").where("prescription_id", "==", prescription_id).get()
+        
+        return [reminder.to_dict() for reminder in reminders]
+    
+    @staticmethod
+    def delete_by_id(reminder_id: str):
+        """
+        Elimina un recordatorio de la base de datos por su ID.
+        """
+        reminder_ref = db.collection("reminders").document(reminder_id)
+        reminder_ref.delete()
