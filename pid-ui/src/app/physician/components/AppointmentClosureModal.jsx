@@ -248,7 +248,7 @@ export const AppointmentClosureModal = ({ isAddObservationModalOpen, setIsAddObe
 				</div>
 
 				<button
-					className={isAppointmentClosable() ? styles["edit-button"] : styles["disabled-button"]}
+					className={`${styles["edit-button"]} ${!isAppointmentClosable() || disabledCloseAppointmentButton ? styles["disabled-button"] : ""}`}
 					onClick={handleAppointmentClosure}
 					disabled={!isAppointmentClosable() || disabledCloseAppointmentButton}
 				>
