@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from firebase_admin import auth
 from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
+from app.config import EMAIL_API_ROOT
 
 from app.models.entities.Physician import Physician
 from app.models.entities.Auth import Auth
@@ -71,7 +72,7 @@ async def approve_physician(physician_id: str, uid=Depends(Auth.is_admin)):
         Admin.approve_physician(physician_id)
         physician = Physician.get_by_id(physician_id)
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "PHYSICIAN_APPROVED_ACCOUNT",
                 "data": {
@@ -119,7 +120,7 @@ async def deny_physician(physician_id: str, uid=Depends(Auth.is_admin)):
         physician = Physician.get_by_id(physician_id)
         Admin.deny_physician(physician_id)
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "PHYSICIAN_DENIED_ACCOUNT",
                 "data": {
@@ -168,7 +169,7 @@ async def unblock_physician(physician_id: str, uid=Depends(Auth.is_admin)):
         physician = Physician.get_blocked_by_id(physician_id)
         Admin.unblock_physician(physician)
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "PHYSICIAN_UNBLOCKED_ACCOUNT",
                 "data": {

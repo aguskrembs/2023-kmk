@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from firebase_admin import firestore
 from fastapi import HTTPException, status
+from app.config import EMAIL_API_ROOT
 
 from .Physician import Physician
 from .Patient import Patient
@@ -226,17 +227,32 @@ class Appointment:
         Physician.schedule_appointment(id=self.physician_id, date=self.date)
 
     def close(self, updated_values):
-        db.collection("appointments").document(self.id).update(
-            {
-                **updated_values,
-                "start_time": updated_values["start_time"],
-                "attended": updated_values["attended"],
-                "status": "closed",
-            }
-        )
-        db.collection("patientsPendingToScore").document(self.patient_id).set(
-            {self.id: True}
-        )
+        appointment_doc = db.collection("appointments").document(self.id).get()
+        if appointment_doc.exists:
+            appointment_data = appointment_doc.to_dict()
+            if appointment_data["status"] == "pending":
+                print("[-] PENDING STATUS ERROR")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Can only close appointment that is approved",
+                )
+            else :
+                closedStatus = "not-attended"
+                print("[+] Cerrando turno")
+                if updated_values["attended"]==True:
+                    db.collection("patientsPendingToScore").document(self.patient_id).set(
+                        {self.id: True}
+                    )
+                    closedStatus = "closed"
+                
+                db.collection("appointments").document(self.id).update(
+                    {
+                        **updated_values,
+                        "start_time": updated_values["start_time"],
+                        "attended": updated_values["attended"],
+                        "status": closedStatus,
+                    }
+                )
 
     def create(self):
         if Patient.has_pending_scores(self.patient_id):
@@ -264,7 +280,7 @@ class Appointment:
         patient = Patient.get_by_id(self.patient_id)
         date = datetime.fromtimestamp(self.date)
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "CANCELED_APPOINTMENT_DUE_TO_PHYSICIAN_DENIAL",
                 "data": {

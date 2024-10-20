@@ -17,7 +17,6 @@ const Admin = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const apiURL = process.env.NEXT_PUBLIC_API_URL;
 	const router = useRouter();
-	const [firstLoad, setFirstLoad] = useState(true);
 	const [specialties, setSpecialties] = useState([]);
 	const [newSpecialty, setNewSpecialty] = useState("");
 	const [physicians, setPhysicians] = useState([]);
@@ -33,7 +32,7 @@ const Admin = () => {
 		rejectUnauthorized: false,
 	});
 
-	const fetchSpecialties = async () => {
+	const fetchSpecialties = async (showToast) => {
 		try {
 			const response = await axios.get(`${apiURL}specialties/`, {
 				httpsAgent: agent,
@@ -43,7 +42,7 @@ const Admin = () => {
 				? setSpecialties([])
 				: setSpecialties(response.data.specialties);
 
-			!firstLoad ? toast.success("Especialidades actualizadas") : null;
+			showToast && toast.success("Especialidades actualizadas");
 		} catch (error) {
 			toast.error("Error al cargar especialidades");
 			console.error(error);
@@ -61,9 +60,7 @@ const Admin = () => {
 			);
 			toast.success("Especialidad agregada");
 			setNewSpecialty("");
-			setFirstLoad(true);
 			fetchSpecialties();
-			setFirstLoad(false);
 		} catch (error) {
 			console.error(error);
 			toast.error("Error al agregar especialidad");
@@ -91,7 +88,7 @@ const Admin = () => {
 		}
 	};
 
-	const fetchPendingPhysicians = async () => {
+	const fetchPendingPhysicians = async (showToast) => {
 		try {
 			const response = await axios.get(
 				`${apiURL}admin/physicians-pending`,
@@ -101,16 +98,14 @@ const Admin = () => {
 			);
 			console.log(response.data.physicians_pending_validation);
 			setPendingPhysicians(response.data.physicians_pending_validation);
-			!firstLoad ? toast.success("Profesionales actualizados") : null;
+			showToast && toast.success("Profesionales actualizados");
 		} catch (error) {
 			console.error(error);
-			!firstLoad
-				? toast.error("Error al actualizar los profesionales")
-				: null;
+			toast.error("Error al actualizar los profesionales");
 		}
 	};
 
-	const fetchPhysicians = async () => {
+	const fetchPhysicians = async (showToast) => {
 		try {
 			const response = await axios.get(
 				`${apiURL}admin/physicians-working`,
@@ -120,16 +115,14 @@ const Admin = () => {
 			);
 			console.log(response.data.physicians_working);
 			setPhysicians(response.data.physicians_working);
-			!firstLoad ? toast.success("Profesionales actualizados") : null;
+			showToast && toast.success("Profesionales actualizados");
 		} catch (error) {
 			console.error(error);
-			!firstLoad
-				? toast.error("Error al actualizar los profesionales")
-				: null;
+			toast.error("Error al actualizar los profesionales");
 		}
 	};
 
-	const fetchBlockedPhysicians = async () => {
+	const fetchBlockedPhysicians = async (showToast) => {
 		try {
 			const response = await axios.get(
 				`${apiURL}admin/physicians-blocked`,
@@ -139,12 +132,10 @@ const Admin = () => {
 			);
 			console.log(response.data.physicians_blocked);
 			setBlockedPhysicians(response.data.physicians_blocked);
-			!firstLoad ? toast.success("Profesionales actualizados") : null;
+			showToast && toast.success("Profesionales actualizados");
 		} catch (error) {
 			console.error(error);
-			!firstLoad
-				? toast.error("Error al actualizar los profesionales")
-				: null;
+			toast.error("Error al actualizar los profesionales");
 		}
 	};
 
@@ -158,12 +149,10 @@ const Admin = () => {
 				}
 			);
 			console.log(response.data);
-			toast.success("Profesional aprobado");
-			setFirstLoad(true);
+			toast.success("Profesional aprobado exitosamente");
 			fetchPendingPhysicians();
 			fetchPhysicians();
 			fetchBlockedPhysicians();
-			setFirstLoad(false);
 		} catch (error) {
 			console.log(error);
 			toast.error("Error al aprobar profesional");
@@ -179,15 +168,13 @@ const Admin = () => {
 					httpsAgent: agent,
 				}
 			);
-			toast.success("Profesional denegado");
-			setFirstLoad(true);
+			toast.success("Profesional bloqueado exitosamente");
 			fetchPendingPhysicians();
 			fetchPhysicians();
 			fetchBlockedPhysicians();
-			setFirstLoad(false);
 		} catch (error) {
 			console.log(error);
-			toast.error("Error al denegar profesional");
+			toast.error("Error al bloquear profesional");
 		}
 	};
 
@@ -201,11 +188,9 @@ const Admin = () => {
 				}
 			);
 			toast.success("Profesional desbloqueado");
-			setFirstLoad(true);
 			fetchPendingPhysicians();
 			fetchPhysicians();
 			fetchBlockedPhysicians();
-			setFirstLoad(false);
 		} catch (error) {
 			console.log(error);
 			toast.error("Error al desbloquear profesional");
@@ -235,7 +220,6 @@ const Admin = () => {
 			fetchPhysicians();
 			fetchBlockedPhysicians();
 			fetchPendingPhysicians().then(() => setIsLoading(false));
-			setFirstLoad(false);
 		});
 	}, []);
 
@@ -265,7 +249,7 @@ const Admin = () => {
 								width={200}
 								height={200}
 								onClick={() => {
-									fetchSpecialties();
+									fetchSpecialties(true);
 								}}
 							/>
 
@@ -353,7 +337,7 @@ const Admin = () => {
 								width={200}
 								height={200}
 								onClick={() => {
-									fetchPendingPhysicians();
+									fetchPendingPhysicians(true);
 								}}
 							/>
 							<div className={styles["admin-section"]}>
@@ -442,7 +426,7 @@ const Admin = () => {
 								width={200}
 								height={200}
 								onClick={() => {
-									fetchPhysicians();
+									fetchPhysicians(true);
 								}}
 							/>
 							<div className={styles["admin-section"]}>
@@ -516,7 +500,7 @@ const Admin = () => {
 								width={200}
 								height={200}
 								onClick={() => {
-									fetchBlockedPhysicians();
+									fetchBlockedPhysicians(true);
 								}}
 							/>
 							<div className={styles["admin-section"]}>

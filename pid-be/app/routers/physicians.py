@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Dict
 from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
+from app.config import EMAIL_API_ROOT
 
 from app.models.requests.PhysicianRequests import AgendaUpdateRequest
 
@@ -96,7 +97,7 @@ async def approve_appointment(appointment_id: str, uid=Depends(Auth.is_logged_in
         physician = Physician.get_by_id(appointment.physician_id)
         date = datetime.fromtimestamp(appointment.date)
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "APPROVED_APPOINTMENT"
                 if not appointment.updated_at

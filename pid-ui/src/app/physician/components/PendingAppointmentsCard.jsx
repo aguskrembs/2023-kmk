@@ -7,18 +7,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import {
-	fetchPendingAppointments,
-	handleApproveAppointment,
-	handleDenyAppointment,
-} from "../../physician/utils";
 
 export const PendingAppointmentsCard = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [showPendingModal, setPendingShowModal] = useState(false);
 	const [appointmentIdToDeny, setAppointmentIdToDeny] = useState(null);
 
-	const { pendingAppointments, setPendingAppointments } = usePhysician();
+	const { pendingAppointments, fetchPendingAppointments, handleApproveAppointment, handleDenyAppointment } = usePhysician();
 
 	const handleDenyClick = (appointmentId) => {
 		setAppointmentIdToDeny(appointmentId);
@@ -26,9 +21,10 @@ export const PendingAppointmentsCard = () => {
 	};
 
 	useEffect(() => {
-		fetchPendingAppointments(setPendingAppointments)
+		fetchPendingAppointments()
 			.then(() => setIsLoading(false))
-			.catch(() => {
+			.catch((error) => {
+				console.log(error);
 				setIsLoading(false);
 				toast.error("Error al obtener los datos del usuario");
 			});
@@ -40,9 +36,7 @@ export const PendingAppointmentsCard = () => {
 				<p>Cargando...</p>
 			) : (
 				<div className={styles.form}>
-					<div className={styles["title"]}>
-						Turnos solicitados sin confirmar
-					</div>
+					<div className={styles["title"]}>Turnos solicitados sin confirmar</div>
 					<Image
 						src="/refresh_icon.png"
 						alt="Notificaciones"
@@ -51,63 +45,22 @@ export const PendingAppointmentsCard = () => {
 						height={200}
 						onClick={() => {
 							toast.info("Actualizando turnos...");
-							fetchPendingAppointments(
-								setPendingAppointments,
-								true
-							);
+							fetchPendingAppointments(true);
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
 						{pendingAppointments.length > 0 ? (
 							<div>
 								{pendingAppointments.map((appointment) => (
-									<div
-										key={appointment.id}
-										className={styles["appointment"]}
-									>
-										<div className={styles["subtitle"]}>
-											Paciente:{" "}
-											{appointment.patient.first_name +
-												" " +
-												appointment.patient.last_name}
-										</div>
-										<p>
-											Fecha y hora:{" "}
-											{new Date(
-												appointment.date * 1000
-											).toLocaleString("es-AR")}
-										</p>
-										<div
-											className={
-												styles[
-													"appointment-buttons-container"
-												]
-											}
-										>
-											<button
-												className={
-													styles["approve-button"]
-												}
-												onClick={() =>
-													handleApproveAppointment(
-														appointment.id,
-														setPendingAppointments
-													)
-												}
-											>
+									<div key={appointment.id} className={styles["appointment"]}>
+										<div className={styles["subtitle"]}>Paciente: {appointment.patient.first_name + " " + appointment.patient.last_name}</div>
+										<p>Fecha y hora: {new Date(appointment.date * 1000).toLocaleString("es-AR", { hour12: false })}</p>
+										<div className={styles["appointment-buttons-container"]}>
+											<button className={styles["approve-button"]} onClick={() => handleApproveAppointment(appointment.id)}>
 												Confirmar{" "}
 											</button>
 
-											<button
-												className={
-													styles["delete-button"]
-												}
-												onClick={() =>
-													handleDenyClick(
-														appointment.id
-													)
-												}
-											>
+											<button className={styles["delete-button"]} onClick={() => handleDenyClick(appointment.id)}>
 												Rechazar
 											</button>
 										</div>
@@ -115,21 +68,13 @@ export const PendingAppointmentsCard = () => {
 								))}
 							</div>
 						) : (
-							<div className={styles["subtitle"]}>
-								No hay turnos pendientes
-							</div>
+							<div className={styles["subtitle"]}>No hay turnos pendientes</div>
 						)}
 					</div>
 					<ConfirmationModal
 						isOpen={showPendingModal}
 						closeModal={() => setPendingShowModal(false)}
-						confirmAction={() =>
-							handleDenyAppointment(
-								appointmentIdToDeny,
-								setPendingAppointments,
-								setPendingShowModal
-							)
-						}
+						confirmAction={() => handleDenyAppointment(appointmentIdToDeny, setPendingShowModal)}
 						message="¿Estás seguro de que deseas rechazar este turno?"
 					/>
 				</div>

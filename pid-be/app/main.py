@@ -1,5 +1,6 @@
 import os
 import uvicorn
+import asyncio
 from dotenv import load_dotenv
 from .config import initialize_firebase_app
 
@@ -12,7 +13,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
-
+from app.scheduler.scheduler import scheduler 
 
 load_dotenv()
 
@@ -27,7 +28,9 @@ from app.routers import (
     bloodTypes,
     analysis,
     dashboards,
-    medications
+    medications,
+    prescriptions,
+    reminders
 )
 from app.models.entities.Auth import Auth
 
@@ -51,12 +54,17 @@ routers = [
     bloodTypes.router,
     analysis.router,
     dashboards.router,
-    medications.router
+    medications.router,
+    prescriptions.router,
+    reminders.router
 ]
 
 for router in routers:
     app.include_router(router)
 
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(scheduler())
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -142,9 +150,17 @@ def custom_openapi():
                 "name": "Analysis",
                 "description": "Operations that handle analysis files",
             },
-             {
+            {
                 "name": "Medications",
                 "description": "Operations that handle medications",
+            },
+            {
+                "name": "Prescriptions",
+                "description": "Operations that handle prescriptions",
+            },
+            {
+                "name": "Reminders",
+                "description": "Operations that handle reminders",
             },
         ],
     )

@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { toast } from "react-toastify";
 import { usePhysician } from "../physicianContext";
-import { useMedications } from "../../physician/utils";
 import { AddMedModal } from "./AddMedModal";
 
 export const MedsCard = () => {
@@ -16,9 +15,7 @@ export const MedsCard = () => {
 	const [showEditMedModal, setShowEditMedModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [medToDelete, setMedToDelete] = useState(null);
-	const { meds } = usePhysician();
-	const { fetchMeds, handleAddMed, handleUpdateMed, handleDeleteMed } =
-		useMedications();
+	const { physicianMeds, fetchMedsByPhysician, handleAddMed, handleUpdateMed, handleDeleteMed } = usePhysician();
 
 	const handleAddMedClick = () => {
 		setShowAddMedModal(true);
@@ -35,7 +32,7 @@ export const MedsCard = () => {
 	};
 
 	useEffect(() => {
-		fetchMeds()
+		fetchMedsByPhysician()
 			.then(() => setIsLoading(false))
 			.catch((error) => {
 				console.error(error);
@@ -50,9 +47,7 @@ export const MedsCard = () => {
 				<p>Cargando...</p>
 			) : (
 				<div className={styles.form}>
-					<div className={styles["title"]}>
-						Mis medicamentos asociados
-					</div>
+					<div className={styles["title"]}>Mis medicamentos asociados</div>
 
 					<Image
 						src="/circle_plus_icon.png"
@@ -70,47 +65,22 @@ export const MedsCard = () => {
 						width={200}
 						height={200}
 						onClick={() => {
-							fetchMeds(true);
+							fetchMedsByPhysician(true);
 						}}
 					/>
 					<div className={styles["appointments-section"]}>
-						{meds.length > 0 ? (
+						{physicianMeds.length > 0 ? (
 							<div>
-								{meds.map((med) => (
-									<div
-										key={med.id}
-										className={styles["appointment"]}
-									>
-										<div className={styles["subtitle"]}>
-											{med.name}
-										</div>
+								{physicianMeds.map((med) => (
+									<div key={med.id} className={styles["appointment"]}>
+										<div className={styles["subtitle"]}>{med.name}</div>
 										<p>Droga: {med.drug}</p>
 										<p>Presentación: {med.dose}</p>
-										<div
-											className={
-												styles[
-													"appointment-buttons-container"
-												]
-											}
-										>
-											<button
-												className={
-													styles["edit-button"]
-												}
-												onClick={() =>
-													handleUpdateMedClick(med)
-												}
-											>
+										<div className={styles["appointment-buttons-container"]}>
+											<button className={styles["edit-button"]} onClick={() => handleUpdateMedClick(med)}>
 												Editar
 											</button>
-											<button
-												className={
-													styles["delete-button"]
-												}
-												onClick={() =>
-													handleDeleteMedClick(med)
-												}
-											>
+											<button className={styles["delete-button"]} onClick={() => handleDeleteMedClick(med)}>
 												Eliminar
 											</button>
 										</div>
@@ -118,29 +88,16 @@ export const MedsCard = () => {
 								))}
 							</div>
 						) : (
-							<div className={styles["subtitle"]}>
-								No tienes medicamentos asociados
-							</div>
+							<div className={styles["subtitle"]}>No tienes medicamentos asociados</div>
 						)}
 					</div>
-					<AddMedModal
-						isOpen={showAddMedModal}
-						closeModal={() => setShowAddMedModal(false)}
-						confirmAction={handleAddMed}
-					/>
-					<AddMedModal
-						isOpen={showEditMedModal}
-						closeModal={() => setShowEditMedModal(false)}
-						confirmAction={handleUpdateMed}
-						med={medToDelete}
-					/>
+					<AddMedModal isOpen={showAddMedModal} closeModal={() => setShowAddMedModal(false)} confirmAction={handleAddMed} />
+					<AddMedModal isOpen={showEditMedModal} closeModal={() => setShowEditMedModal(false)} confirmAction={handleUpdateMed} med={medToDelete} />
 					<ConfirmationModal
 						isOpen={showDeleteModal}
 						closeModal={() => setShowDeleteModal(false)}
 						message="¿Estás seguro que deseas eliminar este medicamento?"
-						confirmAction={() =>
-							handleDeleteMed(medToDelete, setShowDeleteModal)
-						}
+						confirmAction={() => handleDeleteMed(medToDelete, setShowDeleteModal)}
 					/>
 				</div>
 			)}

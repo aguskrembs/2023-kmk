@@ -1,9 +1,11 @@
 import os
 from dotenv import load_dotenv
+import firebase_admin
 from firebase_admin import credentials, initialize_app
 
 load_dotenv()
 
+EMAIL_API_ROOT = os.getenv('EMAIL_API_ROOT', 'http://localhost:9000')
 
 def initialize_firebase_app():
     credentials_to_use = credentials.Certificate(
@@ -23,4 +25,5 @@ def initialize_firebase_app():
             "universe_domain": os.environ.get("UNIVERSE_DOMAIN"),
         }
     )
-    initialize_app(credentials_to_use, {"storageBucket": "pid-kmk.appspot.com"})
+    if not firebase_admin._apps:
+        initialize_app(credentials_to_use, {"storageBucket": "pid-kmk.appspot.com"})
