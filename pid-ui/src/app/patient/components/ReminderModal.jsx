@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import styles from "@/app/styles/ReminderModal.module.css";
 import axios from "axios";
 import https from "https";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const ReminderModal = ({ isOpen, closeModal, prescription }) => {
 	const [meds, setMeds] = useState([]);
@@ -13,8 +15,22 @@ export const ReminderModal = ({ isOpen, closeModal, prescription }) => {
 		rejectUnauthorized: false,
 	});
 
-	const handleSendReminderClick = () => {
-		console.log(startTime, freq);
+	const handleSendReminderClick = async () => {
+		try {
+			const response = await axios.post(
+				`${apiURL}reminders`,
+				{
+					prescription_id: prescription.id,
+					time_to_take: startTime,
+					frequency_hours: freq,
+				},
+				{
+					httpsAgent: agent,
+				}
+			);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const fetchMeds = async (showToast) => {
@@ -46,7 +62,7 @@ export const ReminderModal = ({ isOpen, closeModal, prescription }) => {
 		fetchMeds().catch((error) => {
 			console.error(error);
 		});
-	}, [meds]);
+	}, []);
 
 	return (
 		<Modal isOpen={isOpen} onRequestClose={closeModal} contentLabel="Enviar Recordatorio" className={styles.modal} overlayClassName={styles.overlay} ariaHideApp={false}>
