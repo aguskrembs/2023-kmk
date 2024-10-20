@@ -13,7 +13,6 @@ from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
-
 from app.scheduler.scheduler import scheduler 
 
 load_dotenv()
@@ -34,8 +33,6 @@ from app.routers import (
     reminders
 )
 from app.models.entities.Auth import Auth
-
-from app.scheduler.scheduler import scheduler
 
 
 CTX_PORT: int = int(os.environ.get("PORT")) if os.environ.get("PORT") else 8080
