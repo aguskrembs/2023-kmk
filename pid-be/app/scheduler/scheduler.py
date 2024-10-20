@@ -1,10 +1,12 @@
+import requests
+import asyncio
 from datetime import datetime, timedelta
 from firebase_admin import firestore
 from app.models.entities.Patient import Patient
 from app.models.entities.Prescription import Prescription
 from app.models.entities.Medication import Medication
-import requests
-import asyncio
+from app.config import EMAIL_API_ROOT
+
 
 # Inicializa el cliente de Firestore
 db = firestore.client()
@@ -67,7 +69,7 @@ async def send_reminder_email(reminder_data):
 
         # Llamar a la API de notificaciones para enviar el email
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "MEDICATION_REMINDER",
                 "data": email_data

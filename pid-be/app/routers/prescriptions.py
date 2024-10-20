@@ -1,3 +1,5 @@
+import os
+import requests
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -6,8 +8,7 @@ from app.models.entities.Prescription import Prescription
 from app.models.entities.Physician import Physician
 from app.models.entities.Patient import Patient
 from app.models.entities.Medication import Medication
-import os
-import requests
+from app.config import EMAIL_API_ROOT
 
 router = APIRouter(
     prefix="/prescriptions",
@@ -42,7 +43,7 @@ def create_prescription(prescription: PrescriptionCreate, uid=Depends(Auth.is_lo
 
         # Enviar notificación por correo al paciente
         response = requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "PRESCRIPTION_CREATED", 
                 "data": {
