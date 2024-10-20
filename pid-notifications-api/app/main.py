@@ -4,14 +4,12 @@ from dotenv import load_dotenv
 
 from fastapi import FastAPI, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi.responses import RedirectResponse
 from fastapi.openapi.utils import get_openapi
-from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
 
 from app.routers import emails
 
 load_dotenv()
-
 
 CTX_PORT: int = int(os.environ.get("PORT")) if os.environ.get("PORT") else 9000
 
@@ -31,7 +29,6 @@ for router in routers:
 async def root() -> RedirectResponse:
     """
     Root endpoint,
-
     It returns the OPENAPI docs for the KMK API
     """
     return RedirectResponse(url="/redoc", status_code=status.HTTP_303_SEE_OTHER)

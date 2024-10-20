@@ -1,5 +1,6 @@
 import os
 import uvicorn
+import asyncio
 from dotenv import load_dotenv
 from .config import initialize_firebase_app
 
@@ -13,6 +14,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
 
+from app.scheduler.scheduler import scheduler 
 
 load_dotenv()
 
@@ -32,6 +34,8 @@ from app.routers import (
     reminders
 )
 from app.models.entities.Auth import Auth
+
+from app.scheduler.scheduler import scheduler
 
 
 CTX_PORT: int = int(os.environ.get("PORT")) if os.environ.get("PORT") else 8080
@@ -61,6 +65,9 @@ routers = [
 for router in routers:
     app.include_router(router)
 
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(scheduler())
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
