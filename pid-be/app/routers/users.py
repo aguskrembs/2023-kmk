@@ -3,6 +3,7 @@ import json
 import os
 from dotenv import load_dotenv
 from typing import Union, Annotated
+from app.config import EMAIL_API_ROOT
 
 from fastapi import APIRouter, status, Depends, Body
 from fastapi.responses import JSONResponse
@@ -190,7 +191,7 @@ async def register(
         )
         physician.create()
     requests.post(
-        "http://localhost:9000/emails/send",
+        f"{EMAIL_API_ROOT}/emails/send",
         json={
             "type": "PATIENT_REGISTERED_ACCOUNT"
             if register_request.role == "patient"
@@ -337,7 +338,7 @@ def change_password(
     if login_response.status_code == 200:
         auth.update_user(uid, **{"password": change_password_request.new_password})
         requests.post(
-            "http://localhost:9000/emails/send",
+            f"{EMAIL_API_ROOT}/emails/send",
             json={
                 "type": "PASSWORD_CHANGED",
                 "data": {

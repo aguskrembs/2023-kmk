@@ -1,3 +1,5 @@
+import os
+import requests
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -6,7 +8,7 @@ from app.models.entities.Prescription import Prescription
 from app.models.entities.Physician import Physician
 from app.models.entities.Patient import Patient
 from app.models.entities.Medication import Medication
-import os
+from app.config import EMAIL_API_ROOT
 
 router = APIRouter(
     prefix="/prescriptions",
@@ -31,7 +33,37 @@ def create_prescription(prescription: PrescriptionCreate, uid=Depends(Auth.is_lo
             prescription_detail=prescription.prescription_detail,
             created_by=uid
         )
+
+        physician = Physician.get_by_id(uid)
+        print(physician)
+        patient = Patient.get_by_id(prescription.patient_id)
+        print(patient)
+        med = Medication.get_by_id(prescription.med_id)
+        print(med)
+
+        # Enviar notificación por correo al paciente
+        response = requests.post(
+            f"{EMAIL_API_ROOT}/emails/send",
+            json={
+                "type": "PRESCRIPTION_CREATED", 
+                "data": {
+                    "patient_name": patient["first_name"] + ' ' + patient["last_name"],
+                    "physician_name": physician["first_name"] + ' ' + physician["last_name"],
+                    "medication_name": med["name"] + ' ' + med["dose"],
+                    "prescription_detail": prescription.prescription_detail,
+                    "email": patient["email"]
+                }
+            }
+        )
+
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error al enviar el correo de notificación"
+            )
+
         return new_prescription.create()
+
     except KeyError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

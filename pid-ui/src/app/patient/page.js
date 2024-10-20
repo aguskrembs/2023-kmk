@@ -545,7 +545,7 @@ const DashboardPatient = () => {
 							</select>
 
 							<div className={styles["subtitle"]}>
-								Puntuaciones del médico{" "}
+								Puntuaciones del médico
 								<Tooltip
 									title="Las puntuaciones muestran la opinion de los usuarios acerca de los medicos. La puntuacion mas baja es 0 (muy malo) y la mas alta es 5 (excelente). En caso de que el medico no haya sido puntuado en una categoria aun, se mostrara que dicha seccion no tiene reviews."
 									placement="right"
@@ -564,7 +564,7 @@ const DashboardPatient = () => {
 												<div className={styles["review-cards-container"]}>
 													<div className={styles["review-card"]}>
 														<div className={styles["review-card-title"]}>{review.type}</div>
-														<div className={styles["review-card-content"]}>{review.rating}</div>
+														<div className={styles["review-card-content"]}>{parseFloat(review.rating).toFixed(1)}</div>{" "}
 													</div>
 												</div>
 											</div>

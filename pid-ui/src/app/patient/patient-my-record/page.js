@@ -6,6 +6,7 @@ import axios from "axios";
 import https from "https";
 import { Footer, Header, TabBar } from "../../components/header";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import { ReminderModal } from "../components/ReminderModal";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,10 +37,27 @@ const MyRecord = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [selectedFile, setSelectedFile] = useState("");
 	const [prescriptions, setPrescriptions] = useState([]);
+	const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
+	const [selectedPrescription, setSelectedPrescription] = useState({});
+	const [reminders, setReminders] = useState([]);
 
 	const agent = new https.Agent({
 		rejectUnauthorized: false,
 	});
+
+	const fetchReminders = async (prescription, showToast) => {
+		try {
+			const response = await axios.get(`${apiURL}reminders/get_by_prescription_id/${prescription?.id}`, {
+				httpsAgent: agent,
+			});
+			setReminders(response.data);
+
+			showToast && toast.success("Medicamentos obtenidos exitosamente");
+		} catch (error) {
+			setReminders([]);
+			console.error(error);
+		}
+	};
 
 	const fetchRecord = async () => {
 		try {
@@ -100,6 +118,14 @@ const MyRecord = () => {
 			console.error("Error al descargar el PDF:", error);
 			toast.error("Error al descargar el PDF");
 		}
+	};
+
+	const handleReminderClick = (prescription) => {
+		fetchReminders(prescription).catch((error) => {
+			console.error(error);
+		});
+		setSelectedPrescription(prescription);
+		setIsReminderModalOpen(true);
 	};
 
 	const handleDeleteClick = (file) => {
@@ -189,6 +215,7 @@ const MyRecord = () => {
 											<TableCell align="left">Especialidad</TableCell>
 											<TableCell align="left">Observacion</TableCell>
 											<TableCell align="left">Receta</TableCell>
+											<TableCell align="left">Recordatorios</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
@@ -206,6 +233,13 @@ const MyRecord = () => {
 														{prescription && (
 															<a onClick={() => handleDownloadPDF(prescription.id)} style={{ color: "blue", textDecoration: "underline" }}>
 																Ver receta
+															</a>
+														)}
+													</TableCell>{" "}
+													<TableCell align="left">
+														{prescription && (
+															<a onClick={() => handleReminderClick(prescription)} style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}>
+																Recordatorios
 															</a>
 														)}
 													</TableCell>
@@ -282,6 +316,14 @@ const MyRecord = () => {
 									)}
 									{/* ... */}
 								</div>
+
+								<ReminderModal
+									isOpen={isReminderModalOpen}
+									closeModal={() => setIsReminderModalOpen(false)}
+									prescription={selectedPrescription}
+									reminders={reminders}
+									fetchReminders={() => fetchReminders(selectedPrescription?.id)}
+								/>
 								{/* Modal de confirmación */}
 								<ConfirmationModal
 									isOpen={showModal}
