@@ -32,9 +32,9 @@ class Medication:
         new_med_ref = db.collection("meds").document()
         
         existing_meds = db.collection("meds") \
-            .where("name", "==", self.name) \
-            .where("drug", "==", self.drug) \
-            .where("dose", "==", self.dose) \
+            .where("name", "==", self.name.lower()) \
+            .where("drug", "==", self.drug.lower()) \
+            .where("dose", "==", self.dose.lower()) \
             .where("created_by", "==", self.created_by).get()
 
         if existing_meds:
@@ -45,9 +45,9 @@ class Medication:
         
         new_med_ref.set({
             "id": new_med_ref.id,
-            "name": self.name,
-            "drug": self.drug,
-            "dose": self.dose,
+            "name": self.name.lower(),
+            "drug": self.drug.lower(),
+            "dose": self.dose.lower(),
             "created_by": self.created_by,
             "created_at": self.created_at
         })
@@ -78,6 +78,20 @@ class Medication:
     def update(med_id, updated_data: dict):
         med_ref = db.collection("meds").document(med_id)
         med_doc = med_ref.get()
+
+        existing_meds = db.collection("meds") \
+            .where("name", "==", updated_data.get('name').lower()) \
+            .where("drug", "==", updated_data.get('drug').lower()) \
+            .where("dose", "==", updated_data.get('dose').lower()).get()
+        
+        print(existing_meds)
+
+        for med in existing_meds:
+            if med.id != med_id:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="No se puede actualizar la medicación. Ya existe una medicación con el mismo nombre, droga y dosis.",
+                )
 
         if not med_doc.exists:
             raise HTTPException(

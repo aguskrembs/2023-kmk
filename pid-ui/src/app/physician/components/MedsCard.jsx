@@ -73,9 +73,9 @@ export const MedsCard = () => {
 							<div>
 								{physicianMeds.map((med) => (
 									<div key={med.id} className={styles["appointment"]}>
-										<div className={styles["subtitle"]}>{med.name}</div>
-										<p>Droga: {med.drug}</p>
-										<p>Presentación: {med.dose}</p>
+										<div className={styles["subtitle"]}>{med.name.charAt(0).toUpperCase() + med.name.slice(1)}</div>
+										<p>Droga: {med.drug.charAt(0).toUpperCase() + med.drug.slice(1)}</p>
+										<p>Presentación: {med.dose.charAt(0).toUpperCase() + med.dose.slice(1)}</p>
 										<div className={styles["appointment-buttons-container"]}>
 											<button className={styles["edit-button"]} onClick={() => handleUpdateMedClick(med)}>
 												Editar
